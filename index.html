@@ -1133,6 +1133,162 @@
         }
 
         /* ==========================================================================
+           [SOZ] CLAN PASSWORT-GATE (SPERRBILDSCHIRM)
+           ========================================================================== */
+        body.locked {
+            overflow: hidden;
+        }
+
+        body.locked .site-header,
+        body.locked main,
+        body.locked .site-footer {
+            display: none;
+        }
+
+        .auth-gate {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background:
+                radial-gradient(circle at 50% 20%, rgba(245, 206, 27, 0.14) 0%, transparent 55%),
+                #050507;
+        }
+
+        .auth-gate.hidden {
+            display: none;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 420px;
+            background: #000000;
+            border: 2px solid var(--soz-yellow);
+            border-radius: var(--radius-lg);
+            padding: 2rem 1.75rem;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(245, 206, 27, 0.15);
+            text-align: center;
+        }
+
+        .auth-logo {
+            width: 165px;
+            height: auto;
+            margin: 0 auto 1.25rem;
+            display: block;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 0.5rem 0.75rem;
+            background: #000000;
+        }
+
+        .auth-title {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 0.35rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .auth-title span {
+            color: var(--soz-yellow);
+        }
+
+        .auth-sub {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 1.4rem;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .auth-input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 0.85rem 4.8rem 0.85rem 1rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .auth-input:focus {
+            border-color: var(--soz-yellow);
+            box-shadow: 0 0 0 3px rgba(245, 206, 27, 0.18);
+        }
+
+        .auth-input.error {
+            border-color: #ef4444;
+            animation: shake 0.32s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        .auth-toggle-btn {
+            position: absolute;
+            right: 0.5rem;
+            padding: 0.35rem 0.6rem;
+            border-radius: 0.35rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .auth-toggle-btn:hover {
+            color: var(--soz-yellow);
+            border-color: var(--soz-yellow);
+        }
+
+        .auth-submit {
+            width: 100%;
+            padding: 0.85rem 1.2rem;
+            border-radius: var(--radius-sm);
+            background: var(--soz-yellow);
+            color: #000000;
+            font-weight: 900;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            box-shadow: 0 6px 20px var(--soz-yellow-glow);
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
+
+        .auth-submit:hover {
+            background: var(--soz-yellow-hover);
+            transform: translateY(-1px);
+        }
+
+        .auth-error-msg {
+            min-height: 1.25rem;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #f87171;
+            margin-top: 0.25rem;
+        }
+
+        /* ==========================================================================
            RESPONSIVE ANPASSUNGEN (TABLET & SMARTPHONE)
            ========================================================================== */
         @media (max-width: 960px) {
@@ -1175,7 +1331,35 @@
         }
     </style>
 </head>
-<body>
+<body class="locked">
+
+    <!-- ==========================================================================
+         [SOZ] CLAN PASSWORT-GATE (WIRD VOR DEM INTRANET ANGEZEIGT)
+         ========================================================================== -->
+    <div class="auth-gate" id="auth-gate" role="dialog" aria-modal="true" aria-labelledby="auth-heading">
+        <div class="auth-card">
+            <svg class="auth-logo" viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="[SOZ] Sozialer Verein seit 1998">
+                <rect width="360" height="220" fill="#000000"/>
+                <path d="M 76 30 H 32 V 190 H 76" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="square"/>
+                <path d="M 284 30 H 328 V 190 H 284" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="square"/>
+                <text x="180" y="38" text-anchor="middle" fill="#F5CE1B" font-family="Impact, 'Arial Black', sans-serif" font-weight="900" font-size="25" letter-spacing="3">seit 1998</text>
+                <text x="180" y="150" text-anchor="middle" fill="#FFFFFF" font-family="Impact, 'Arial Black', sans-serif" font-weight="900" font-size="118" letter-spacing="8">SOZ</text>
+                <text x="180" y="198" text-anchor="middle" fill="#F5CE1B" font-family="Impact, 'Arial Black', sans-serif" font-weight="900" font-size="24" letter-spacing="1.5">Sozialer Verein</text>
+            </svg>
+
+            <h2 class="auth-title" id="auth-heading"><span>[SOZ]</span> Clan-Zugang</h2>
+            <p class="auth-sub">RapidLAN Velen-Ramsdorf (02.12. – 06.12.2026)<br>Bitte Clan-Passwort eingeben:</p>
+
+            <form class="auth-form" id="auth-form" autocomplete="off">
+                <div class="auth-input-wrap">
+                    <input type="password" id="auth-password-input" class="auth-input" placeholder="Clan-Passwort..." aria-label="Clan-Passwort" required autofocus>
+                    <button type="button" class="auth-toggle-btn" id="auth-toggle-vis">Zeigen</button>
+                </div>
+                <button type="submit" class="auth-submit">Intranet entsperren</button>
+                <div class="auth-error-msg" id="auth-error-msg" role="alert"></div>
+            </form>
+        </div>
+    </div>
 
     <!-- ==========================================================================
          STICKY HEADER MIT [SOZ]-LOGO & WLAN-KOPFZEILE
@@ -1587,6 +1771,12 @@
          ========================================================================== -->
     <script>
         const CONFIG = {
+            auth: {
+                enabled: true,
+                // SHA-256 Hash von "kotzen" (damit das Passwort nicht im Klartext steht)
+                passwordHash: "a10c54d11cc40ec9a4167794a0a16b25350b817689818f4048a102b8e2e61d34"
+            },
+
             event: {
                 badge: "CLAN-LAN • 02.12. – 06.12.2026",
                 welcomeText: "Willkommen im internen LAN-Portal des Sozialen Vereins! Hier findet ihr unseren TeamSpeak-Zugang, alle Infos zum RapidLAN-Haus in Velen-Ramsdorf, die [SOZ]-Packliste (Stand 07/2026) sowie die wichtigsten Q&As für 5 Tage Ausnahmezustand.",
@@ -1742,18 +1932,99 @@
            INITIALISIERUNG & RENDERING
            ========================================================================== */
         const PACK_STORAGE_KEY = "soz_rapidlan_packliste_2026_v1";
+        const AUTH_SESSION_KEY = "soz_rapidlan_unlocked_2026";
 
         document.addEventListener("DOMContentLoaded", () => {
-            renderHeroAndTeamSpeak();
-            renderWifiBars();
-            startLiveCountdown();
-            renderLocationDetails();
-            renderPackingList();
-            renderFAQs();
-            renderOrgaFooter();
-            setupTeamSpeakPasswordToggle();
-            setupCopyButtons();
+            setupAuthGate(() => {
+                renderHeroAndTeamSpeak();
+                renderWifiBars();
+                startLiveCountdown();
+                renderLocationDetails();
+                renderPackingList();
+                renderFAQs();
+                renderOrgaFooter();
+                setupTeamSpeakPasswordToggle();
+                setupCopyButtons();
+            });
         });
+
+        async function sha256Hex(text) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(text);
+            const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+            return Array.from(new Uint8Array(hashBuffer))
+                .map(b => b.toString(16).padStart(2, "0"))
+                .join("");
+        }
+
+        function setupAuthGate(onUnlock) {
+            const gate = document.getElementById("auth-gate");
+            const form = document.getElementById("auth-form");
+            const input = document.getElementById("auth-password-input");
+            const errorEl = document.getElementById("auth-error-msg");
+            const toggleBtn = document.getElementById("auth-toggle-vis");
+
+            function unlock() {
+                document.body.classList.remove("locked");
+                gate.classList.add("hidden");
+                try {
+                    sessionStorage.setItem(AUTH_SESSION_KEY, "1");
+                } catch (e) {}
+                onUnlock();
+            }
+
+            if (!CONFIG.auth || !CONFIG.auth.enabled) {
+                unlock();
+                return;
+            }
+
+            try {
+                if (sessionStorage.getItem(AUTH_SESSION_KEY) === "1") {
+                    unlock();
+                    return;
+                }
+            } catch (e) {}
+
+            toggleBtn.addEventListener("click", () => {
+                if (input.type === "password") {
+                    input.type = "text";
+                    toggleBtn.textContent = "Verbergen";
+                } else {
+                    input.type = "password";
+                    toggleBtn.textContent = "Zeigen";
+                }
+                input.focus();
+            });
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const entered = input.value.trim();
+                if (!entered) return;
+
+                let isValid = false;
+                try {
+                    if (window.crypto && window.crypto.subtle) {
+                        const hash = await sha256Hex(entered);
+                        isValid = (hash === CONFIG.auth.passwordHash);
+                    } else {
+                        isValid = (entered === CONFIG.teamspeak.password);
+                    }
+                } catch (err) {
+                    isValid = (entered === CONFIG.teamspeak.password);
+                }
+
+                if (isValid) {
+                    errorEl.textContent = "";
+                    unlock();
+                } else {
+                    errorEl.textContent = "Falsches Passwort – frag im [SOZ]-Chat nach!";
+                    input.classList.remove("error");
+                    void input.offsetWidth;
+                    input.classList.add("error");
+                    input.select();
+                }
+            });
+        }
 
         function renderHeroAndTeamSpeak() {
             document.getElementById("hero-badge-text").textContent = CONFIG.event.badge;
