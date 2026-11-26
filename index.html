@@ -1773,8 +1773,8 @@
         const CONFIG = {
             auth: {
                 enabled: true,
-                // SHA-256 Hash von "kotzen" (damit das Passwort nicht im Klartext steht)
-                passwordHash: "a10c54d11cc40ec9a4167794a0a16b25350b817689818f4048a102b8e2e61d34"
+                // Leicht verschleiert (Base64 von "kotzen"), damit es beim Überfliegen nicht sofort auffällt
+                passwordEncoded: "a290emVu"
             },
 
             event: {
@@ -1948,15 +1948,6 @@
             });
         });
 
-        async function sha256Hex(text) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(text);
-            const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-            return Array.from(new Uint8Array(hashBuffer))
-                .map(b => b.toString(16).padStart(2, "0"))
-                .join("");
-        }
-
         function setupAuthGate(onUnlock) {
             const gate = document.getElementById("auth-gate");
             const form = document.getElementById("auth-form");
@@ -1996,24 +1987,17 @@
                 input.focus();
             });
 
-            form.addEventListener("submit", async (e) => {
+            form.addEventListener("submit", (e) => {
                 e.preventDefault();
-                const entered = input.value.trim();
+                const entered = input.value.trim().toLowerCase();
                 if (!entered) return;
 
-                let isValid = false;
+                let expected = "kotzen";
                 try {
-                    if (window.crypto && window.crypto.subtle) {
-                        const hash = await sha256Hex(entered);
-                        isValid = (hash === CONFIG.auth.passwordHash);
-                    } else {
-                        isValid = (entered === CONFIG.teamspeak.password);
-                    }
-                } catch (err) {
-                    isValid = (entered === CONFIG.teamspeak.password);
-                }
+                    expected = atob(CONFIG.auth.passwordEncoded).toLowerCase();
+                } catch (err) {}
 
-                if (isValid) {
+                if (entered === expected) {
                     errorEl.textContent = "";
                     unlock();
                 } else {
