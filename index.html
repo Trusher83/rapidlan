@@ -703,6 +703,536 @@
         }
 
         /* ==========================================================================
+           INTERAKTIVER CLAN EVENT- & TURNIERPLANER
+           ========================================================================== */
+        .events-topbar {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.15rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nick-box {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            flex-wrap: wrap;
+        }
+
+        .nick-label {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--soz-yellow);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .nick-input {
+            padding: 0.45rem 0.75rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-black);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.88rem;
+            font-weight: 700;
+            min-width: 195px;
+            outline: none;
+        }
+
+        .nick-input:focus {
+            border-color: var(--soz-yellow);
+        }
+
+        .events-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary-small {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.55rem 0.95rem;
+            border-radius: var(--radius-sm);
+            background: var(--soz-yellow);
+            color: #000000;
+            font-size: 0.84rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            box-shadow: 0 4px 14px var(--soz-yellow-glow);
+            transition: all 0.15s ease;
+        }
+
+        .btn-primary-small:hover {
+            background: var(--soz-yellow-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary-small {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.55rem 0.9rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.84rem;
+            font-weight: 700;
+            transition: all 0.15s ease;
+        }
+
+        .btn-secondary-small:hover {
+            border-color: var(--soz-yellow);
+            color: var(--soz-yellow);
+        }
+
+        /* Kompaktes [SOZ] Teilnehmer-Lineup */
+        .roster-panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.15rem;
+            margin-top: 1.25rem;
+        }
+
+        .roster-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-bottom: 0.65rem;
+            flex-wrap: wrap;
+        }
+
+        .roster-title {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--soz-yellow);
+        }
+
+        .roster-count {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .roster-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .roster-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.28rem 0.65rem;
+            border-radius: 999px;
+            background: var(--bg-black);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .roster-chip:hover {
+            border-color: var(--soz-yellow);
+            color: var(--text-primary);
+        }
+
+        .roster-chip.active {
+            background: var(--soz-yellow-soft);
+            border-color: var(--soz-yellow);
+            color: var(--soz-yellow);
+        }
+
+        .event-form-card {
+            background: #000000;
+            border: 1px solid var(--soz-yellow);
+            border-radius: var(--radius-lg);
+            padding: 1.35rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .event-form-card.open {
+            display: block;
+        }
+
+        .event-form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .form-field.span-2 {
+            grid-column: span 2;
+        }
+
+        .form-field.span-3 {
+            grid-column: 1 / -1;
+        }
+
+        .form-field label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+        }
+
+        .form-control {
+            padding: 0.6rem 0.8rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--soz-yellow);
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.15rem;
+        }
+
+        .event-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 0.95rem;
+            transition: border-color 0.18s ease;
+        }
+
+        .event-card:hover {
+            border-color: var(--border-accent);
+        }
+
+        .event-card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.65rem;
+        }
+
+        .event-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.72rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 0.22rem 0.6rem;
+            border-radius: 0.35rem;
+            background: var(--soz-yellow-soft);
+            color: var(--soz-yellow);
+            border: 1px solid var(--border-accent);
+        }
+
+        .event-type-badge.gaming {
+            background: var(--status-cyan-soft);
+            color: var(--status-cyan);
+            border-color: rgba(56, 189, 248, 0.35);
+        }
+
+        .event-type-badge.misc {
+            background: var(--status-green-soft);
+            color: #34d399;
+            border-color: rgba(16, 185, 129, 0.35);
+        }
+
+        .event-when {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            background: var(--bg-black);
+            border: 1px solid var(--border-color);
+            padding: 0.24rem 0.6rem;
+            border-radius: 0.35rem;
+            white-space: nowrap;
+        }
+
+        .event-title {
+            font-size: 1.12rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-top: 0.45rem;
+        }
+
+        .event-meta-line {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        .event-note {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-top: 0.55rem;
+            background: var(--bg-elevated);
+            padding: 0.55rem 0.75rem;
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--soz-yellow);
+        }
+
+        .event-players-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            margin-top: 0.6rem;
+        }
+
+        .player-chip {
+            font-size: 0.76rem;
+            font-weight: 700;
+            padding: 0.2rem 0.55rem;
+            border-radius: 999px;
+            background: var(--bg-black);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .player-chip.me {
+            border-color: var(--status-green);
+            color: #6ee7b7;
+            background: var(--status-green-soft);
+        }
+
+        .event-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.65rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-join {
+            padding: 0.45rem 0.85rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            font-weight: 800;
+            background: var(--soz-yellow);
+            color: #000000;
+            transition: all 0.15s ease;
+        }
+
+        .btn-join:hover {
+            background: var(--soz-yellow-hover);
+        }
+
+        .btn-join.joined {
+            background: var(--status-green-soft);
+            border: 1px solid var(--status-green);
+            color: #6ee7b7;
+        }
+
+        .btn-delete-event {
+            padding: 0.42rem 0.65rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #fca5a5;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-delete-event:hover {
+            background: rgba(239, 68, 68, 0.25);
+            color: #ffffff;
+        }
+
+        /* ==========================================================================
+           TEAM-RANDOMIZER (5ON5 / 2ON2 / FREI)
+           ========================================================================== */
+        .randomizer-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-lg);
+            padding: 1.4rem;
+        }
+
+        .randomizer-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.85rem;
+            flex-wrap: wrap;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .randomizer-modes {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+        }
+
+        .rnd-pool-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-bottom: 0.65rem;
+            flex-wrap: wrap;
+        }
+
+        .rnd-pool-title {
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--soz-yellow);
+        }
+
+        .rnd-pool-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rnd-player-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .rnd-player-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.42rem 0.78rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-black);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.84rem;
+            font-weight: 700;
+            transition: all 0.14s ease;
+            user-select: none;
+        }
+
+        .rnd-player-btn:hover {
+            border-color: var(--soz-yellow);
+            color: var(--text-primary);
+        }
+
+        .rnd-player-btn.selected {
+            background: var(--soz-yellow);
+            border-color: var(--soz-yellow);
+            color: #000000;
+            font-weight: 900;
+            box-shadow: 0 3px 12px var(--soz-yellow-glow);
+        }
+
+        .rnd-teams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 1rem;
+            margin-top: 1.15rem;
+        }
+
+        .rnd-team-box {
+            background: #000000;
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.1rem;
+        }
+
+        .rnd-team-box.bench {
+            border-color: var(--border-color);
+            background: var(--bg-elevated);
+        }
+
+        .rnd-team-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding-bottom: 0.55rem;
+            margin-bottom: 0.65rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .rnd-team-name {
+            font-size: 0.95rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: var(--soz-yellow);
+        }
+
+        .rnd-team-box.bench .rnd-team-name {
+            color: var(--text-muted);
+        }
+
+        .rnd-team-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .rnd-team-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            background: var(--bg-surface);
+            padding: 0.4rem 0.65rem;
+            border-radius: 0.35rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .rnd-slot-num {
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            color: var(--soz-yellow);
+            font-weight: 800;
+        }
+
+        /* ==========================================================================
            INTERAKTIVE [SOZ] AUSSTATTUNGS- & PACKLISTE
            ========================================================================== */
         .rapid-diff-banner {
@@ -1300,8 +1830,14 @@
             }
             .info-grid-2,
             .pack-grid,
-            .rapid-diff-grid {
+            .rapid-diff-grid,
+            .events-grid,
+            .event-form-grid {
                 grid-template-columns: 1fr;
+            }
+            .form-field.span-2,
+            .form-field.span-3 {
+                grid-column: span 1;
             }
         }
 
@@ -1377,13 +1913,15 @@
                     <text x="180" y="198" text-anchor="middle" fill="#F5CE1B" font-family="Impact, 'Arial Black', sans-serif" font-weight="900" font-size="24" letter-spacing="1.5">Sozialer Verein</text>
                 </svg>
                 <div class="brand-text">
-                    <span class="brand-title">[SOZ] Clan Intranet <span style="display:inline-block; font-size:0.68rem; background:var(--soz-yellow); color:#000; padding:0.1rem 0.42rem; border-radius:0.3rem; vertical-align:middle; margin-left:0.3rem;">v0.1</span></span>
+                    <span class="brand-title">[SOZ] Clan Intranet <span style="display:inline-block; font-size:0.68rem; background:var(--soz-yellow); color:#000; padding:0.1rem 0.42rem; border-radius:0.3rem; vertical-align:middle; margin-left:0.3rem;">v0.4</span></span>
                     <span class="brand-sub">RapidLAN Velen-Ramsdorf • 02.12. – 06.12.2026</span>
                 </div>
             </a>
 
             <nav class="nav-links" aria-label="Hauptnavigation">
                 <a href="#teamspeak">TeamSpeak 3</a>
+                <a href="#events">Events &amp; Turniere</a>
+                <a href="#randomizer">Team-Randomizer</a>
                 <a href="#lanhaus">RapidLAN Haus</a>
                 <a href="#packliste">Packliste</a>
                 <a href="#faq">Q&amp;A / FAQ</a>
@@ -1550,7 +2088,177 @@
         </section>
 
         <!-- ==========================================================================
-             1. RAPIDLAN VELEN-RAMSDORF – LOCATION & AUSSTATTUNG
+             1. CLAN EVENT- & TURNIERPLANER (VOR ORT, GAMING & SONSTIGES)
+             ========================================================================== -->
+        <section id="events">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        Events &amp; Turnierplaner
+                    </h2>
+                    <p class="section-desc">Eigene Runden eintragen: Tischtennis, Air-Hockey, Dart, Bier Pong, CS2 (5on5 / Wingman) oder Einkaufen &amp; Essen.</p>
+                </div>
+            </div>
+
+            <!-- Nickname & Aktionsleiste -->
+            <div class="events-topbar">
+                <div class="nick-box">
+                    <label for="event-nickname" class="nick-label">Dein [SOZ]-Name:</label>
+                    <select id="event-nickname" class="nick-input" aria-label="Deinen [SOZ]-Namen auswählen">
+                        <option value="">-- Bitte wählen --</option>
+                    </select>
+                </div>
+                <div class="events-actions">
+                    <button type="button" class="btn-secondary-small" id="btn-share-events" title="Kopiert einen Link mit deinen erstellten Events für WhatsApp / TeamSpeak">
+                        🔗 Plan als Link teilen
+                    </button>
+                    <button type="button" class="btn-primary-small" id="btn-toggle-event-form">
+                        + Event eintragen
+                    </button>
+                </div>
+            </div>
+
+            <!-- Formular für neues Event -->
+            <div class="event-form-card" id="event-form-card">
+                <form id="new-event-form">
+                    <div class="event-form-grid">
+                        <div class="form-field">
+                            <label for="ev-activity">Aktivität / Spiel auswählen</label>
+                            <select id="ev-activity" class="form-control" required>
+                                <optgroup label="Vor Ort im Haus">
+                                    <option value="Tischtennis">🏓 Tischtennis</option>
+                                    <option value="Air-Hockey">🏒 Air-Hockey</option>
+                                    <option value="Dart">🎯 Dart spielen</option>
+                                    <option value="Bier Pong">🍺 Bier Pong</option>
+                                </optgroup>
+                                <optgroup label="Gaming">
+                                    <option value="Counter-Strike 2 (5on5)">🔫 Counter-Strike 2 – 5on5</option>
+                                    <option value="Counter-Strike 2 Wingman (2on2)">🔫 Counter-Strike 2 – Wingman (2on2)</option>
+                                    <option value="Sonstiges Game">🎮 Sonstiges Game</option>
+                                </optgroup>
+                                <optgroup label="Sonstiges & Orga">
+                                    <option value="Einkaufen gehen">🛒 Einkaufen gehen</option>
+                                    <option value="Essen gehen / Bestellen">🍕 Essen gehen / Bestellen</option>
+                                    <option value="Gemeinsam Kochen / Grillen">🍳 Gemeinsam Kochen / Grillen</option>
+                                    <option value="Sonstiges">📌 Sonstiges</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="ev-day">Tag (02.12. – 06.12.)</label>
+                            <select id="ev-day" class="form-control" required>
+                                <option value="Mi, 02.12.">Mittwoch, 02.12.</option>
+                                <option value="Do, 03.12." selected>Donnerstag, 03.12.</option>
+                                <option value="Fr, 04.12.">Freitag, 04.12.</option>
+                                <option value="Sa, 05.12.">Samstag, 05.12.</option>
+                                <option value="So, 06.12.">Sonntag, 06.12.</option>
+                            </select>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="ev-time">Uhrzeit</label>
+                            <input type="time" id="ev-time" class="form-control" value="20:00" required>
+                        </div>
+
+                        <div class="form-field span-2">
+                            <label for="ev-title">Eigener Titel (optional – sonst wird Aktivität genutzt)</label>
+                            <input type="text" id="ev-title" class="form-control" placeholder="z. B. Großer [SOZ] Bier Pong Cup oder Rewe-Run" maxlength="60">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="ev-max">Max. Teilnehmer (0 = offen)</label>
+                            <input type="number" id="ev-max" class="form-control" min="0" max="25" value="0">
+                        </div>
+
+                        <div class="form-field span-3">
+                            <label for="ev-note">Kurze Info / Regeln / Treffpunkt (optional)</label>
+                            <input type="text" id="ev-note" class="form-control" placeholder="z. B. 2er Teams werden vor Ort gelost / Treffpunkt Küche" maxlength="120">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 0.65rem; justify-content: flex-end; flex-wrap: wrap;">
+                        <button type="button" class="btn-secondary-small" id="btn-cancel-event">Abbrechen</button>
+                        <button type="submit" class="btn-primary-small">Event speichern</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Filter & Event-Karten -->
+            <div class="pack-filters" id="event-filters" style="margin-bottom: 1.15rem;">
+                <button type="button" class="pack-filter-btn active" data-ev-filter="all">Alle Events</button>
+                <button type="button" class="pack-filter-btn" data-ev-filter="vorort">🏓 Vor Ort (TT / Dart / Bier Pong)</button>
+                <button type="button" class="pack-filter-btn" data-ev-filter="gaming">🔫 Gaming (CS2)</button>
+                <button type="button" class="pack-filter-btn" data-ev-filter="misc">🍕 Essen / Einkaufen / Sonstiges</button>
+            </div>
+
+            <div class="events-grid" id="events-grid"></div>
+
+            <!-- [SOZ] Teilnehmer-Lineup (19 Mann) -->
+            <div class="roster-panel" aria-label="Teilnehmerliste">
+                <div class="roster-header">
+                    <span class="roster-title">[SOZ] Kader vor Ort (Klick auf deinen Namen zum Auswählen)</span>
+                    <span class="roster-count" id="roster-count">19 / 25 Plätze belegt</span>
+                </div>
+                <div class="roster-chips" id="roster-chips"></div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             2. [SOZ] TEAM-RANDOMIZER (5ON5 / 2ON2 / TURNIER-TEAMS)
+             ========================================================================== -->
+        <section id="randomizer">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="16 3 21 3 21 8"></polyline>
+                            <line x1="4" y1="20" x2="21" y2="3"></line>
+                            <polyline points="21 16 21 21 16 21"></polyline>
+                            <line x1="15" y1="15" x2="21" y2="21"></line>
+                            <line x1="4" y1="4" x2="9" y2="9"></line>
+                        </svg>
+                        Team-Randomizer (5on5 / 2on2)
+                    </h2>
+                    <p class="section-desc">Spieler anklicken, Modus wählen und faire Zufalls-Teams für CS2, Tischtennis oder Bier Pong auswürfeln.</p>
+                </div>
+            </div>
+
+            <div class="randomizer-card">
+                <div class="randomizer-controls">
+                    <div class="randomizer-modes" id="rnd-modes">
+                        <button type="button" class="pack-filter-btn active" data-rnd-mode="5v5">🔫 5on5 (2 Teams à 5)</button>
+                        <button type="button" class="pack-filter-btn" data-rnd-mode="2v2">🏓 2on2 / Wingman (2er-Teams)</button>
+                        <button type="button" class="pack-filter-btn" data-rnd-mode="2teams">⚖️ Alle auf 2 Teams aufteilen</button>
+                    </div>
+                    <div class="events-actions">
+                        <button type="button" class="btn-secondary-small" id="btn-rnd-copy" style="display:none;">📋 Teams kopieren</button>
+                        <button type="button" class="btn-primary-small" id="btn-rnd-roll">🎲 Teams auswürfeln</button>
+                    </div>
+                </div>
+
+                <div class="rnd-pool-header">
+                    <span class="rnd-pool-title">Mitspieler auswählen: <span id="rnd-selected-count" style="color:var(--text-primary);">0 ausgewählt</span></span>
+                    <div class="rnd-pool-actions">
+                        <button type="button" class="wifi-mini-btn" id="btn-rnd-select-all">Alle (19)</button>
+                        <button type="button" class="wifi-mini-btn" id="btn-rnd-clear">Auswahl leeren</button>
+                    </div>
+                </div>
+
+                <div class="rnd-player-grid" id="rnd-player-grid"></div>
+
+                <div class="rnd-teams-grid" id="rnd-teams-grid"></div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             3. RAPIDLAN HAUS VELEN-RAMSDORF – AUSSTATTUNG & INFOS
              ========================================================================== -->
         <section id="lanhaus">
             <div class="section-header">
@@ -1562,58 +2270,43 @@
                         </svg>
                         RapidLAN Haus (Velen-Ramsdorf)
                     </h2>
-                    <p class="section-desc">Alle Fakten zur Location, Ausstattung und Hausordnung im Kreis Borken.</p>
+                    <p class="section-desc">700 m² voll klimatisiertes LAN-Haus im Kreis Borken – alle Fakten &amp; Hausregeln.</p>
                 </div>
             </div>
 
             <div class="highlights-banner">
                 <div class="stat-card">
                     <span class="stat-number">700 m²</span>
-                    <span class="stat-label">Vollklimatisiertes LAN-Haus</span>
+                    <span class="stat-label">Gesamtfläche</span>
                 </div>
                 <div class="stat-card">
                     <span class="stat-number">1 Gbit/s</span>
-                    <span class="stat-label">Down / 500 Mbit/s Up Glasfaser</span>
+                    <span class="stat-label">Down / 500 Mbit Up</span>
                 </div>
                 <div class="stat-card">
                     <span class="stat-number">130 m²</span>
-                    <span class="stat-label">Gaming-Raum + Gamechanger-Stühle</span>
+                    <span class="stat-label">Gaming-Arena</span>
                 </div>
                 <div class="stat-card">
                     <span class="stat-number">8 Räume</span>
-                    <span class="stat-label">Ruheräume (ca. 175 m²)</span>
+                    <span class="stat-label">Ruheräume (175 m²)</span>
                 </div>
             </div>
 
             <div class="info-grid-2">
                 <div class="info-card">
-                    <h3 class="info-card-title">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                            <rect x="2" y="3" width="20" height="14" rx="2"></rect>
-                            <line x1="8" y1="21" x2="16" y2="21"></line>
-                            <line x1="12" y1="17" x2="12" y2="21"></line>
-                        </svg>
-                        Gaming, Lounge &amp; Freizeit vor Ort
-                    </h3>
+                    <h3 class="info-card-title">Ausstattung vor Ort</h3>
                     <ul class="feature-list" id="equipment-list"></ul>
                 </div>
-
                 <div class="info-card">
-                    <h3 class="info-card-title">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="16" x2="12" y2="12"></line>
-                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                        </svg>
-                        Wichtige Infos &amp; Hausregeln
-                    </h3>
+                    <h3 class="info-card-title">Anreise, Einkaufen &amp; Regeln</h3>
                     <ul class="feature-list" id="rules-list"></ul>
                 </div>
             </div>
         </section>
 
         <!-- ==========================================================================
-             2. INTERAKTIVE [SOZ] AUSSTATTUNGS- & PACKLISTE (STAND 07/2026)
+             3. INTERAKTIVE [SOZ] AUSSTATTUNGS- & PACKLISTE (STAND 07/2026)
              ========================================================================== -->
         <section id="packliste">
             <div class="section-header">
@@ -1925,6 +2618,28 @@
             orgas: [
                 { name: "[SOZ] Clan-Orga", role: "TeamSpeak: soz-clan.de" },
                 { name: "Location", role: "RapidLAN Velen-Ramsdorf" }
+            ],
+
+            participants: [
+                "Topper",
+                "Fricky",
+                "Trusher",
+                "Oridicon",
+                "Cortison",
+                "BrokkoCop",
+                "Helge",
+                "MaTzSaTT",
+                "Förster",
+                "Luffy-Eyss",
+                "Cr!zU",
+                "Affenkoepfchen",
+                "DAvi",
+                "kfinimpar",
+                "fml",
+                "FupSeL",
+                "Nakasi",
+                "SpyRoX",
+                "MinusBrain"
             ]
         };
 
@@ -1939,6 +2654,8 @@
                 renderHeroAndTeamSpeak();
                 renderWifiBars();
                 startLiveCountdown();
+                renderEventsPlanner();
+                renderTeamRandomizer();
                 renderLocationDetails();
                 renderPackingList();
                 renderFAQs();
@@ -2116,14 +2833,485 @@
             setInterval(update, 1000);
         }
 
-        function renderLocationDetails() {
-            document.getElementById("equipment-list").innerHTML = CONFIG.locationDetails.equipment.map(html => `
-                <li><span class="bullet-dot green"></span><span>${html}</span></li>
-            `).join("");
+        /* ==========================================================================
+           EVENT- & TURNIERPLANER LOGIK (REINES VANILLA JS + LOCALSTORAGE + URL-SHARE)
+           ========================================================================== */
+        const EVENTS_STORAGE_KEY = "soz_rapidlan_events_2026_v2";
+        const NICK_STORAGE_KEY = "soz_rapidlan_nick_2026";
 
-            document.getElementById("rules-list").innerHTML = CONFIG.locationDetails.rules.map(html => `
-                <li><span class="bullet-dot"></span><span>${html}</span></li>
-            `).join("");
+        const DEFAULT_EVENTS = [];
+
+        function getActivityCategory(activity) {
+            if (activity.includes("Counter-Strike") || activity.includes("Game")) return "gaming";
+            if (["Einkaufen gehen", "Essen gehen / Bestellen", "Gemeinsam Kochen / Grillen", "Sonstiges"].includes(activity)) return "misc";
+            return "vorort";
+        }
+
+        function loadEventsData() {
+            // Prüfen, ob ein geteilter Plan in der URL steckt (#plan=...)
+            try {
+                const hash = window.location.hash || "";
+                if (hash.startsWith("#plan=")) {
+                    const encoded = hash.slice(6);
+                    const json = decodeURIComponent(escape(atob(encoded)));
+                    const parsed = JSON.parse(json);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(parsed));
+                        history.replaceState(null, "", window.location.pathname + window.location.search);
+                        return parsed;
+                    }
+                }
+            } catch (e) {}
+
+            try {
+                const raw = localStorage.getItem(EVENTS_STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) return parsed;
+                }
+            } catch (e) {}
+
+            return JSON.parse(JSON.stringify(DEFAULT_EVENTS));
+        }
+
+        function saveEventsData(list) {
+            try {
+                localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(list));
+            } catch (e) {}
+        }
+
+        function renderEventsPlanner() {
+            const grid = document.getElementById("events-grid");
+            const nickSelect = document.getElementById("event-nickname");
+            const rosterChipsEl = document.getElementById("roster-chips");
+            const rosterCountEl = document.getElementById("roster-count");
+            const formCard = document.getElementById("event-form-card");
+            const toggleFormBtn = document.getElementById("btn-toggle-event-form");
+            const cancelFormBtn = document.getElementById("btn-cancel-event");
+            const shareBtn = document.getElementById("btn-share-events");
+            const form = document.getElementById("new-event-form");
+            const filterBtns = document.querySelectorAll("[data-ev-filter]");
+
+            let eventsList = loadEventsData();
+            let activeFilter = "all";
+
+            // Teilnehmerliste ins Dropdown füllen
+            const participants = Array.isArray(CONFIG.participants) ? CONFIG.participants : [];
+            nickSelect.innerHTML = `<option value="">-- Bitte wählen --</option>` +
+                participants.map(name => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join("");
+
+            if (rosterCountEl) {
+                rosterCountEl.textContent = `${participants.length} / 25 Plätze belegt`;
+            }
+
+            try {
+                const savedNick = localStorage.getItem(NICK_STORAGE_KEY);
+                if (savedNick && participants.includes(savedNick)) {
+                    nickSelect.value = savedNick;
+                }
+            } catch (e) {}
+
+            function setSelectedNick(name) {
+                nickSelect.value = name;
+                try {
+                    localStorage.setItem(NICK_STORAGE_KEY, name);
+                } catch (e) {}
+                draw();
+            }
+
+            nickSelect.addEventListener("change", () => {
+                setSelectedNick(nickSelect.value);
+            });
+
+            if (rosterChipsEl) {
+                rosterChipsEl.addEventListener("click", (e) => {
+                    const chip = e.target.closest("[data-roster-name]");
+                    if (!chip) return;
+                    const name = chip.getAttribute("data-roster-name");
+                    setSelectedNick(name);
+                    showToast(`Ausgewählt als: ${name}`);
+                });
+            }
+
+            toggleFormBtn.addEventListener("click", () => {
+                formCard.classList.toggle("open");
+            });
+
+            cancelFormBtn.addEventListener("click", () => {
+                formCard.classList.remove("open");
+            });
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    filterBtns.forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    activeFilter = btn.getAttribute("data-ev-filter");
+                    draw();
+                });
+            });
+
+            shareBtn.addEventListener("click", () => {
+                try {
+                    const json = JSON.stringify(eventsList);
+                    const encoded = btoa(unescape(encodeURIComponent(json)));
+                    const shareUrl = `${window.location.origin}${window.location.pathname}#plan=${encoded}`;
+                    copyTextSafe(shareUrl, () => {
+                        showToast("Link mit aktuellem Event-Plan kopiert!");
+                    });
+                } catch (e) {
+                    showToast("Link konnte nicht erstellt werden");
+                }
+            });
+
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const creator = nickSelect.value.trim();
+                if (!creator) {
+                    nickSelect.focus();
+                    showToast("Bitte erst oben deinen [SOZ]-Namen auswählen!");
+                    return;
+                }
+
+                const activity = document.getElementById("ev-activity").value;
+                const day = document.getElementById("ev-day").value;
+                const time = document.getElementById("ev-time").value || "20:00";
+                const customTitle = document.getElementById("ev-title").value.trim();
+                const maxPlayers = Math.max(0, parseInt(document.getElementById("ev-max").value, 10) || 0);
+                const note = document.getElementById("ev-note").value.trim();
+
+                const newEvent = {
+                    id: "ev-" + Date.now(),
+                    activity: activity,
+                    title: customTitle || activity,
+                    day: day,
+                    time: time,
+                    maxPlayers: maxPlayers,
+                    creator: creator,
+                    note: note,
+                    players: [creator]
+                };
+
+                eventsList.push(newEvent);
+                saveEventsData(eventsList);
+
+                form.reset();
+                document.getElementById("ev-day").value = "Do, 03.12.";
+                document.getElementById("ev-time").value = "20:00";
+                document.getElementById("ev-max").value = "0";
+                formCard.classList.remove("open");
+
+                draw();
+                showToast(`Event "${newEvent.title}" eingetragen!`);
+            });
+
+            function draw() {
+                const myNick = nickSelect.value.trim();
+
+                if (rosterChipsEl) {
+                    rosterChipsEl.innerHTML = participants.map(name => {
+                        const isMe = myNick && name.toLowerCase() === myNick.toLowerCase();
+                        return `<button type="button" class="roster-chip ${isMe ? "active" : ""}" data-roster-name="${escapeHtml(name)}">${isMe ? "✓ " : ""}${escapeHtml(name)}</button>`;
+                    }).join("");
+                }
+
+                const dayOrder = {
+                    "Mi, 02.12.": 1,
+                    "Do, 03.12.": 2,
+                    "Fr, 04.12.": 3,
+                    "Sa, 05.12.": 4,
+                    "So, 06.12.": 5
+                };
+
+                const sorted = [...eventsList].sort((a, b) => {
+                    const dA = dayOrder[a.day] || 99;
+                    const dB = dayOrder[b.day] || 99;
+                    if (dA !== dB) return dA - dB;
+                    return (a.time || "").localeCompare(b.time || "");
+                });
+
+                const filtered = sorted.filter(ev => {
+                    if (activeFilter === "all") return true;
+                    return getActivityCategory(ev.activity) === activeFilter;
+                });
+
+                if (filtered.length === 0) {
+                    grid.innerHTML = `<p style="color: var(--text-muted); grid-column: 1 / -1;">Noch keine Events in dieser Kategorie eingetragen. Klicke oben auf <strong>+ Event eintragen</strong>!</p>`;
+                    return;
+                }
+
+                grid.innerHTML = filtered.map(ev => {
+                    const cat = getActivityCategory(ev.activity);
+                    const badgeClass = cat === "gaming" ? "gaming" : (cat === "misc" ? "misc" : "");
+                    const players = Array.isArray(ev.players) ? ev.players : [];
+                    const isJoined = myNick && players.some(p => p.toLowerCase() === myNick.toLowerCase());
+                    const isFull = ev.maxPlayers > 0 && players.length >= ev.maxPlayers && !isJoined;
+                    const countText = ev.maxPlayers > 0 ? `${players.length} / ${ev.maxPlayers} Plätze` : `${players.length} dabei`;
+
+                    return `
+                        <div class="event-card" data-ev-id="${escapeHtml(ev.id)}">
+                            <div>
+                                <div class="event-card-top">
+                                    <span class="event-type-badge ${badgeClass}">${escapeHtml(ev.activity)}</span>
+                                    <span class="event-when">${escapeHtml(ev.day)} • ${escapeHtml(ev.time)} Uhr</span>
+                                </div>
+                                <h3 class="event-title">${escapeHtml(ev.title)}</h3>
+                                <div class="event-meta-line">Erstellt von <strong>${escapeHtml(ev.creator)}</strong> • ${countText}</div>
+                                ${ev.note ? `<div class="event-note">${escapeHtml(ev.note)}</div>` : ""}
+                                <div class="event-players-wrap">
+                                    ${players.length > 0
+                                        ? players.map(p => {
+                                            const isMe = myNick && p.toLowerCase() === myNick.toLowerCase();
+                                            return `<span class="player-chip ${isMe ? "me" : ""}">${escapeHtml(p)}</span>`;
+                                        }).join("")
+                                        : `<span style="font-size:0.78rem; color:var(--text-muted);">Noch niemand angemeldet</span>`
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="event-card-footer">
+                                <button type="button" class="btn-join ${isJoined ? "joined" : ""}" data-ev-action="toggle-join" ${isFull ? "disabled style='opacity:0.45; cursor:not-allowed;'" : ""}>
+                                    ${isJoined ? "✓ Dabei (Austragen)" : (isFull ? "Voll" : "+ Mitmachen")}
+                                </button>
+                                <button type="button" class="btn-delete-event" data-ev-action="delete" title="Event löschen">
+                                    Löschen
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+            }
+
+            grid.addEventListener("click", (e) => {
+                const actionBtn = e.target.closest("[data-ev-action]");
+                if (!actionBtn) return;
+
+                const card = actionBtn.closest(".event-card");
+                if (!card) return;
+                const evId = card.getAttribute("data-ev-id");
+                const action = actionBtn.getAttribute("data-ev-action");
+                const idx = eventsList.findIndex(item => item.id === evId);
+                if (idx === -1) return;
+
+                if (action === "toggle-join") {
+                    const nick = nickSelect.value.trim();
+                    if (!nick) {
+                        nickSelect.focus();
+                        showToast("Bitte erst oben deinen [SOZ]-Namen auswählen!");
+                        return;
+                    }
+                    const players = eventsList[idx].players || [];
+                    const existingIdx = players.findIndex(p => p.toLowerCase() === nick.toLowerCase());
+                    if (existingIdx !== -1) {
+                        players.splice(existingIdx, 1);
+                        showToast(`Ausgetragen: ${eventsList[idx].title}`);
+                    } else {
+                        if (eventsList[idx].maxPlayers > 0 && players.length >= eventsList[idx].maxPlayers) {
+                            showToast("Leider schon voll!");
+                            return;
+                        }
+                        players.push(nick);
+                        showToast(`Angemeldet bei: ${eventsList[idx].title}`);
+                    }
+                    eventsList[idx].players = players;
+                    saveEventsData(eventsList);
+                    draw();
+                }
+
+                if (action === "delete") {
+                    if (actionBtn.dataset.armed !== "true") {
+                        actionBtn.dataset.armed = "true";
+                        actionBtn.textContent = "Sicher?";
+                        setTimeout(() => {
+                            if (actionBtn) {
+                                actionBtn.dataset.armed = "false";
+                                actionBtn.textContent = "Löschen";
+                            }
+                        }, 3000);
+                        return;
+                    }
+                    const removedTitle = eventsList[idx].title;
+                    eventsList.splice(idx, 1);
+                    saveEventsData(eventsList);
+                    draw();
+                    showToast(`Event "${removedTitle}" gelöscht`);
+                }
+            });
+
+            draw();
+        }
+
+        /* ==========================================================================
+           TEAM-RANDOMIZER LOGIK (5ON5, 2ON2 WINGMAN, 2 TEAMS AUSGEGLICHEN)
+           ========================================================================== */
+        function renderTeamRandomizer() {
+            const playerGrid = document.getElementById("rnd-player-grid");
+            const teamsGrid = document.getElementById("rnd-teams-grid");
+            const countEl = document.getElementById("rnd-selected-count");
+            const modeBtns = document.querySelectorAll("[data-rnd-mode]");
+            const rollBtn = document.getElementById("btn-rnd-roll");
+            const copyBtn = document.getElementById("btn-rnd-copy");
+            const selectAllBtn = document.getElementById("btn-rnd-select-all");
+            const clearBtn = document.getElementById("btn-rnd-clear");
+
+            if (!playerGrid || !teamsGrid) return;
+
+            const participants = Array.isArray(CONFIG.participants) ? CONFIG.participants : [];
+            const selectedSet = new Set();
+            let currentMode = "5v5";
+            let lastGeneratedText = "";
+
+            function updatePoolUI() {
+                countEl.textContent = `${selectedSet.size} ausgewählt`;
+                playerGrid.innerHTML = participants.map(name => {
+                    const isSel = selectedSet.has(name);
+                    return `<button type="button" class="rnd-player-btn ${isSel ? "selected" : ""}" data-rnd-player="${escapeHtml(name)}">${isSel ? "✓ " : ""}${escapeHtml(name)}</button>`;
+                }).join("");
+            }
+
+            playerGrid.addEventListener("click", (e) => {
+                const btn = e.target.closest("[data-rnd-player]");
+                if (!btn) return;
+                const name = btn.getAttribute("data-rnd-player");
+                if (selectedSet.has(name)) {
+                    selectedSet.delete(name);
+                } else {
+                    selectedSet.add(name);
+                }
+                updatePoolUI();
+            });
+
+            selectAllBtn.addEventListener("click", () => {
+                participants.forEach(p => selectedSet.add(p));
+                updatePoolUI();
+            });
+
+            clearBtn.addEventListener("click", () => {
+                selectedSet.clear();
+                teamsGrid.innerHTML = "";
+                copyBtn.style.display = "none";
+                lastGeneratedText = "";
+                updatePoolUI();
+            });
+
+            modeBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    modeBtns.forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    currentMode = btn.getAttribute("data-rnd-mode");
+                });
+            });
+
+            function shuffleArray(arr) {
+                const copy = [...arr];
+                for (let i = copy.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [copy[i], copy[j]] = [copy[j], copy[i]];
+                }
+                return copy;
+            }
+
+            rollBtn.addEventListener("click", () => {
+                const pool = Array.from(selectedSet);
+                if (pool.length < 2) {
+                    showToast("Bitte mindestens 2 Mitspieler auswählen!");
+                    return;
+                }
+
+                const shuffled = shuffleArray(pool);
+                const teams = [];
+                let bench = [];
+
+                if (currentMode === "5v5") {
+                    if (shuffled.length < 10) {
+                        showToast(`Hinweis: Nur ${shuffled.length} Spieler gewählt – Teams werden aufgeteilt.`);
+                        const half = Math.ceil(shuffled.length / 2);
+                        teams.push({ name: "Team CT / Alpha", members: shuffled.slice(0, half) });
+                        teams.push({ name: "Team T / Bravo", members: shuffled.slice(half) });
+                    } else {
+                        teams.push({ name: "Team CT / Alpha (5)", members: shuffled.slice(0, 5) });
+                        teams.push({ name: "Team T / Bravo (5)", members: shuffled.slice(5, 10) });
+                        bench = shuffled.slice(10);
+                    }
+                } else if (currentMode === "2v2") {
+                    const numPairs = Math.floor(shuffled.length / 2);
+                    for (let i = 0; i < numPairs; i++) {
+                        teams.push({
+                            name: `Team #${i + 1}`,
+                            members: [shuffled[i * 2], shuffled[i * 2 + 1]]
+                        });
+                    }
+                    if (shuffled.length % 2 === 1) {
+                        bench = [shuffled[shuffled.length - 1]];
+                    }
+                } else {
+                    const half = Math.ceil(shuffled.length / 2);
+                    teams.push({ name: "Team 1", members: shuffled.slice(0, half) });
+                    teams.push({ name: "Team 2", members: shuffled.slice(half) });
+                }
+
+                let html = teams.map(t => `
+                    <div class="rnd-team-box">
+                        <div class="rnd-team-head">
+                            <span class="rnd-team-name">${escapeHtml(t.name)}</span>
+                            <span class="roster-count">${t.members.length} Spieler</span>
+                        </div>
+                        <ul class="rnd-team-list">
+                            ${t.members.map((m, i) => `<li><span class="rnd-slot-num">#${i + 1}</span><span>${escapeHtml(m)}</span></li>`).join("")}
+                        </ul>
+                    </div>
+                `).join("");
+
+                if (bench.length > 0) {
+                    html += `
+                        <div class="rnd-team-box bench">
+                            <div class="rnd-team-head">
+                                <span class="rnd-team-name">Auswechselbank / Nachrücker</span>
+                                <span class="roster-count">${bench.length}</span>
+                            </div>
+                            <ul class="rnd-team-list">
+                                ${bench.map((m, i) => `<li><span class="rnd-slot-num">⏸</span><span>${escapeHtml(m)}</span></li>`).join("")}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                teamsGrid.innerHTML = html;
+
+                const lines = ["🎲 [SOZ] Ausgeloste Teams:"];
+                teams.forEach(t => {
+                    lines.push(`${t.name}: ${t.members.join(", ")}`);
+                });
+                if (bench.length > 0) {
+                    lines.push(`Bank/Nachrücker: ${bench.join(", ")}`);
+                }
+                lastGeneratedText = lines.join("\n");
+                copyBtn.style.display = "inline-flex";
+                showToast("Teams wurden neu ausgewürfelt!");
+            });
+
+            copyBtn.addEventListener("click", () => {
+                if (!lastGeneratedText) return;
+                copyTextSafe(lastGeneratedText, () => {
+                    showToast("Team-Aufstellung kopiert!");
+                });
+            });
+
+            updatePoolUI();
+        }
+
+        function renderLocationDetails() {
+            const eqEl = document.getElementById("equipment-list");
+            const rulesEl = document.getElementById("rules-list");
+            if (eqEl) {
+                eqEl.innerHTML = CONFIG.locationDetails.equipment.map(html => `
+                    <li><span class="bullet-dot green"></span><span>${html}</span></li>
+                `).join("");
+            }
+            if (rulesEl) {
+                rulesEl.innerHTML = CONFIG.locationDetails.rules.map(html => `
+                    <li><span class="bullet-dot"></span><span>${html}</span></li>
+                `).join("");
+            }
         }
 
         function getCheckedPackItems() {
