@@ -1,0 +1,2162 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[SOZ] Clan Intranet | RapidLAN Velen (02.12. – 06.12.2026)</title>
+
+    <!-- Eingebettetes Favicon im SOZ-Clan-Design (Gelb #F5CE1B & Weiß auf Schwarz) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23000000'/%3E%3Cpath d='M16 14H8v36h8M48 14h8v36h-8' fill='none' stroke='%23ffffff' stroke-width='4'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='Impact,Arial Black,sans-serif' font-weight='900' font-size='22' fill='%23ffffff'%3ESOZ%3C/text%3E%3Ctext x='32' y='11' text-anchor='middle' font-family='Arial,sans-serif' font-weight='800' font-size='7' fill='%23F5CE1B'%3E1998%3C/text%3E%3C/svg%3E">
+
+    <style>
+        /* ==========================================================================
+           [SOZ] SOZIALER VEREIN (SEIT 1998) – DESIGN TOKENS & VARIABLEN
+           ========================================================================== */
+        :root {
+            --bg-black: #000000;
+            --bg-body: #070709;
+            --bg-surface: #101116;
+            --bg-elevated: #171922;
+            --bg-header: rgba(0, 0, 0, 0.94);
+
+            --soz-yellow: #F5CE1B;
+            --soz-yellow-hover: #FFE047;
+            --soz-yellow-soft: rgba(245, 206, 27, 0.14);
+            --soz-yellow-glow: rgba(245, 206, 27, 0.30);
+
+            --text-primary: #FFFFFF;
+            --text-secondary: #CBD5E1;
+            --text-muted: #94A3B8;
+
+            --status-green: #10B981;
+            --status-green-soft: rgba(16, 185, 129, 0.16);
+            --status-cyan: #38BDF8;
+            --status-cyan-soft: rgba(56, 189, 248, 0.14);
+
+            --border-color: #242736;
+            --border-accent: rgba(245, 206, 27, 0.42);
+
+            --radius-lg: 1rem;
+            --radius-md: 0.75rem;
+            --radius-sm: 0.5rem;
+
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-display: Impact, "Arial Black", "Segoe UI", sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+        }
+
+        /* ==========================================================================
+           RESET & BASIS-STYLES
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 12% 0%, rgba(245, 206, 27, 0.09) 0%, transparent 42%),
+                radial-gradient(circle at 88% 8%, rgba(245, 206, 27, 0.05) 0%, transparent 38%),
+                var(--bg-body);
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+        }
+
+        /* ==========================================================================
+           STICKY HEADER & NAVIGATION + WLAN-KOPFZEILE
+           ========================================================================== */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-header);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.7rem 0;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+        }
+
+        .soz-logo-header {
+            height: 48px;
+            width: auto;
+            display: block;
+            border-radius: 0.45rem;
+            border: 1px solid var(--border-accent);
+            background: #000000;
+            padding: 3px 6px;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-title {
+            font-weight: 800;
+            font-size: 1.05rem;
+            letter-spacing: 0.02em;
+            color: var(--text-primary);
+        }
+
+        .brand-sub {
+            font-size: 0.78rem;
+            color: var(--soz-yellow);
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            padding: 0.5rem 0.85rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.18s ease;
+        }
+
+        .nav-links a:hover {
+            color: #000000;
+            background: var(--soz-yellow);
+        }
+
+        /* Kompakte WLAN-Leiste in Kopf- & Fußzeile */
+        .wifi-strip {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-color);
+            font-size: 0.82rem;
+        }
+
+        .wifi-strip-footer {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+            font-size: 0.84rem;
+        }
+
+        .wifi-strip-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.45rem 0;
+            flex-wrap: wrap;
+        }
+
+        .wifi-strip-footer .wifi-strip-inner {
+            padding: 0.75rem 1rem;
+        }
+
+        .wifi-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-weight: 800;
+            color: var(--soz-yellow);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-size: 0.78rem;
+        }
+
+        .wifi-items {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            flex-wrap: wrap;
+        }
+
+        .wifi-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            background: var(--bg-black);
+            border: 1px solid var(--border-color);
+            border-radius: 0.45rem;
+            padding: 0.25rem 0.55rem;
+        }
+
+        .wifi-chip-key {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .wifi-chip-val {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 0.82rem;
+        }
+
+        .wifi-mini-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.22rem 0.5rem;
+            border-radius: 0.35rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            color: var(--soz-yellow);
+            font-size: 0.74rem;
+            font-weight: 700;
+            transition: all 0.15s ease;
+        }
+
+        .wifi-mini-btn:hover {
+            background: var(--soz-yellow);
+            color: #000000;
+            border-color: var(--soz-yellow);
+        }
+
+        /* ==========================================================================
+           HERO BEREICH MIT CLAN-LOGO & TEAMSPEAK DIREKTZUGANG
+           ========================================================================== */
+        .hero {
+            padding: 2.5rem 0 2rem;
+        }
+
+        .hero-card {
+            background: linear-gradient(145deg, #000000 0%, #101116 60%, #161822 100%);
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+            display: grid;
+            grid-template-columns: 1.25fr 0.95fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .hero-top-row {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .soz-hero-emblem {
+            width: 170px;
+            height: auto;
+            background: #000000;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 0.65rem 0.9rem;
+            flex-shrink: 0;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 999px;
+            background: var(--soz-yellow-soft);
+            border: 1px solid var(--border-accent);
+            color: var(--soz-yellow);
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.55rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--soz-yellow);
+            box-shadow: 0 0 10px var(--soz-yellow);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.45; transform: scale(0.85); }
+        }
+
+        .hero h1 {
+            font-size: clamp(1.75rem, 3.2vw, 2.55rem);
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+        }
+
+        .hero h1 span {
+            color: var(--soz-yellow);
+        }
+
+        .hero-desc {
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+            margin-bottom: 1.25rem;
+        }
+
+        /* ==========================================================================
+           LIVE-COUNTDOWN BIS ZUM LAN-START
+           ========================================================================== */
+        .countdown-box {
+            background: #000000;
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-md);
+            padding: 0.85rem 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .countdown-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--soz-yellow);
+            margin-bottom: 0.6rem;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.55rem;
+        }
+
+        .cd-unit {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 0.55rem 0.35rem;
+            text-align: center;
+        }
+
+        .cd-val {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            line-height: 1.1;
+        }
+
+        .cd-lbl {
+            display: block;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        .hero-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .meta-pill {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 0.75rem 0.95rem;
+        }
+
+        .meta-pill-label {
+            display: block;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 0.15rem;
+        }
+
+        .meta-pill-value {
+            font-size: 0.94rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* ==========================================================================
+           TEAMSPEAK 3 HIGHLIGHT-KARTE
+           ========================================================================== */
+        .ts-card {
+            background: #000000;
+            border: 2px solid var(--soz-yellow);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: 0 0 32px rgba(245, 206, 27, 0.12);
+        }
+
+        .ts-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .ts-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .ts-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-sm);
+            background: var(--soz-yellow);
+            color: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .ts-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .ts-subtitle {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .ts-online-tag {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--status-green);
+            background: var(--status-green-soft);
+            padding: 0.25rem 0.65rem;
+            border-radius: 999px;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            white-space: nowrap;
+        }
+
+        .copy-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 0.7rem 0.9rem;
+            margin-bottom: 0.7rem;
+        }
+
+        .copy-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .copy-label {
+            display: block;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+        }
+
+        .copy-value {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--soz-yellow);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .btn-group-inline {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-shrink: 0;
+        }
+
+        .btn-copy {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: all 0.15s ease;
+        }
+
+        .btn-copy:hover {
+            background: var(--soz-yellow);
+            border-color: var(--soz-yellow);
+            color: #000000;
+        }
+
+        .btn-copy.copied {
+            background: var(--status-green-soft);
+            border-color: var(--status-green);
+            color: #6ee7b7;
+        }
+
+        .btn-ts-connect {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+            width: 100%;
+            margin-top: 0.9rem;
+            padding: 0.85rem 1.2rem;
+            border-radius: var(--radius-sm);
+            background: var(--soz-yellow);
+            color: #000000;
+            font-weight: 900;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            box-shadow: 0 6px 20px var(--soz-yellow-glow);
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .btn-ts-connect:hover {
+            background: var(--soz-yellow-hover);
+            transform: translateY(-1px);
+        }
+
+        /* ==========================================================================
+           SEKTIONEN & ÜBERSCHRIFTEN
+           ========================================================================== */
+        section {
+            padding: 2.25rem 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .section-title {
+            font-size: 1.45rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .section-title svg {
+            color: var(--soz-yellow);
+            flex-shrink: 0;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-top: 0.2rem;
+        }
+
+        /* ==========================================================================
+           RAPIDLAN VELEN – LOCATION & AUSSTATTUNG
+           ========================================================================== */
+        .highlights-banner {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .stat-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.1rem 1.2rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 1.55rem;
+            font-weight: 900;
+            color: var(--soz-yellow);
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .info-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        .info-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+        }
+
+        .info-card-title {
+            font-size: 1.08rem;
+            font-weight: 800;
+            color: var(--soz-yellow);
+            margin-bottom: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: grid;
+            gap: 0.65rem;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.65rem;
+            font-size: 0.93rem;
+            color: var(--text-secondary);
+        }
+
+        .bullet-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--soz-yellow);
+            margin-top: 0.52rem;
+            flex-shrink: 0;
+        }
+
+        .bullet-dot.green {
+            background: var(--status-green);
+        }
+
+        /* ==========================================================================
+           INTERAKTIVE [SOZ] AUSSTATTUNGS- & PACKLISTE
+           ========================================================================== */
+        .rapid-diff-banner {
+            background: linear-gradient(135deg, rgba(245, 206, 27, 0.12) 0%, rgba(16, 17, 22, 0.98) 100%);
+            border: 1px solid var(--border-accent);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .rapid-diff-title {
+            font-size: 0.95rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: var(--soz-yellow);
+            margin-bottom: 0.65rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rapid-diff-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.55rem 1.25rem;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+
+        .rapid-diff-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tag-rapid {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 0.14rem 0.45rem;
+            border-radius: 0.3rem;
+            background: var(--soz-yellow);
+            color: #000000;
+            flex-shrink: 0;
+        }
+
+        .tag-vorort {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 0.14rem 0.45rem;
+            border-radius: 0.3rem;
+            background: var(--status-green-soft);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            flex-shrink: 0;
+        }
+
+        .pack-controls {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+
+        .pack-progress-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .pack-progress-text {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .pack-progress-text span {
+            color: var(--soz-yellow);
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 10px;
+            background: var(--bg-black);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--soz-yellow) 0%, #FFE047 100%);
+            transition: width 0.25s ease;
+        }
+
+        .pack-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .pack-filters {
+            display: flex;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+        }
+
+        .pack-filter-btn {
+            padding: 0.42rem 0.8rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+        }
+
+        .pack-filter-btn:hover {
+            border-color: var(--soz-yellow);
+            color: var(--text-primary);
+        }
+
+        .pack-filter-btn.active {
+            background: var(--soz-yellow);
+            border-color: var(--soz-yellow);
+            color: #000000;
+        }
+
+        .pack-reset-btn {
+            padding: 0.42rem 0.8rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #fca5a5;
+            transition: all 0.15s ease;
+        }
+
+        .pack-reset-btn:hover {
+            background: rgba(239, 68, 68, 0.24);
+            color: #ffffff;
+        }
+
+        .pack-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        .pack-category-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.35rem;
+        }
+
+        .pack-cat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding-bottom: 0.75rem;
+            margin-bottom: 0.85rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .pack-cat-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--soz-yellow);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .pack-cat-count {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: var(--bg-black);
+            padding: 0.2rem 0.55rem;
+            border-radius: 999px;
+            border: 1px solid var(--border-color);
+        }
+
+        .pack-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .pack-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            padding: 0.55rem 0.65rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-elevated);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .pack-item:hover {
+            border-color: var(--border-accent);
+        }
+
+        .pack-item.checked {
+            background: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.28);
+        }
+
+        .pack-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 0.35rem;
+            border: 2px solid var(--text-muted);
+            background: var(--bg-black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+            transition: all 0.15s ease;
+        }
+
+        .pack-item.checked .pack-checkbox {
+            background: var(--status-green);
+            border-color: var(--status-green);
+            color: #000000;
+        }
+
+        .pack-item-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .pack-item-top {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+        }
+
+        .pack-item-label {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .pack-item.checked .pack-item-label {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .pack-item-note {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+
+        /* ==========================================================================
+           FAQ / Q&A ACCORDION
+           ========================================================================== */
+        .faq-search {
+            width: 100%;
+            max-width: 340px;
+            padding: 0.65rem 1rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.18s ease;
+        }
+
+        .faq-search:focus {
+            border-color: var(--soz-yellow);
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        details.faq-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: border-color 0.2s ease;
+        }
+
+        details.faq-item[open] {
+            border-color: var(--soz-yellow);
+        }
+
+        details.faq-item summary {
+            list-style: none;
+            padding: 1.05rem 1.25rem;
+            font-weight: 700;
+            font-size: 0.98rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            user-select: none;
+        }
+
+        details.faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-chevron {
+            width: 20px;
+            height: 20px;
+            color: var(--soz-yellow);
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        details.faq-item[open] .faq-chevron {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 1.25rem 1.15rem;
+            color: var(--text-secondary);
+            font-size: 0.93rem;
+            border-top: 1px solid rgba(36, 39, 54, 0.65);
+            padding-top: 0.9rem;
+        }
+
+        /* ==========================================================================
+           FOOTER & TOAST NOTIFICATION
+           ========================================================================== */
+        .site-footer {
+            margin-top: 3rem;
+            border-top: 1px solid var(--border-color);
+            background: #000000;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+        }
+
+        .orga-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .orga-chip {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-accent);
+            border-radius: 999px;
+            padding: 0.35rem 0.85rem;
+            color: var(--text-primary);
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .orga-chip span {
+            color: var(--soz-yellow);
+            font-weight: 800;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 999;
+            background: #000000;
+            border: 1px solid var(--soz-yellow);
+            color: var(--text-primary);
+            padding: 0.8rem 1.15rem;
+            border-radius: var(--radius-md);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8);
+            font-size: 0.88rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            opacity: 0;
+            transform: translateY(12px);
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==========================================================================
+           RESPONSIVE ANPASSUNGEN (TABLET & SMARTPHONE)
+           ========================================================================== */
+        @media (max-width: 960px) {
+            .hero-card {
+                grid-template-columns: 1fr;
+            }
+            .highlights-banner {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .info-grid-2,
+            .pack-grid,
+            .rapid-diff-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-card {
+                padding: 1.25rem;
+            }
+            .soz-hero-emblem {
+                width: 145px;
+            }
+            .hero-meta-grid {
+                grid-template-columns: 1fr;
+            }
+            .copy-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn-group-inline {
+                justify-content: flex-end;
+            }
+            .faq-search {
+                max-width: 100%;
+            }
+            .cd-val {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================================================
+         STICKY HEADER MIT [SOZ]-LOGO & WLAN-KOPFZEILE
+         ========================================================================== -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="#" class="brand">
+                <!-- Originalgetreues [SOZ] Clan-Logo als gestochen scharfes Inline-SVG -->
+                <svg class="soz-logo-header" viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="[SOZ] Sozialer Verein seit 1998 Logo">
+                    <rect width="360" height="220" fill="#000000"/>
+                    <path d="M 76 30 H 32 V 190 H 76" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="square"/>
+                    <path d="M 284 30 H 328 V 190 H 284" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="square"/>
+                    <text x="180" y="38" text-anchor="middle" fill="#F5CE1B" font-family="Impact, 'Arial Black', sans-serif" font-weight="900" font-size="25" letter-spacing="3">seit 1998</text>
+                    <text x="180" y="150" text-anchor="middle" fill="#FFFFFF" font-family="Impact, 'Arial Black', sans-serif" font-weight="900" font-size="118" letter-spacing="8">SOZ</text>
+                    <text x="180" y="198" text-anchor="middle" fill="#F5CE1B" font-family="Impact, 'Arial Black', sans-serif" font-weight="900" font-size="24" letter-spacing="1.5">Sozialer Verein</text>
+                </svg>
+                <div class="brand-text">
+                    <span class="brand-title">[SOZ] Clan Intranet <span style="display:inline-block; font-size:0.68rem; background:var(--soz-yellow); color:#000; padding:0.1rem 0.42rem; border-radius:0.3rem; vertical-align:middle; margin-left:0.3rem;">v0.1</span></span>
+                    <span class="brand-sub">RapidLAN Velen-Ramsdorf • 02.12. – 06.12.2026</span>
+                </div>
+            </a>
+
+            <nav class="nav-links" aria-label="Hauptnavigation">
+                <a href="#teamspeak">TeamSpeak 3</a>
+                <a href="#lanhaus">RapidLAN Haus</a>
+                <a href="#packliste">Packliste</a>
+                <a href="#faq">Q&amp;A / FAQ</a>
+            </nav>
+        </div>
+
+        <!-- WLAN-Zugang als kompakte Kopfzeile -->
+        <div class="wifi-strip" aria-label="WLAN Zugangsdaten">
+            <div class="container wifi-strip-inner">
+                <span class="wifi-label">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                        <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                        <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                        <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                    </svg>
+                    Haus-WLAN:
+                </span>
+                <div class="wifi-items">
+                    <div class="wifi-chip">
+                        <span class="wifi-chip-key">SSID:</span>
+                        <span class="wifi-chip-val" id="wifi-head-ssid">RapidLAN_5GHz</span>
+                        <button type="button" class="wifi-mini-btn" data-copy-target="wifi-head-ssid" data-copy-label="WLAN-Name">Kopieren</button>
+                    </div>
+                    <div class="wifi-chip">
+                        <span class="wifi-chip-key">Passwort:</span>
+                        <span class="wifi-chip-val" id="wifi-head-pass" data-secret="">••••••••••••</span>
+                        <button type="button" class="wifi-mini-btn" data-wifi-toggle="head">Zeigen</button>
+                        <button type="button" class="wifi-mini-btn" data-copy-target="wifi-head-pass" data-copy-label="WLAN-Passwort">Kopieren</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ==========================================================================
+             HERO: WILLKOMMEN BEI [SOZ] + LIVE-COUNTDOWN + TEAMSPEAK 3 ZUGANG
+             ========================================================================== -->
+        <section class="hero" id="teamspeak">
+            <div class="hero-card">
+                <div>
+                    <div class="hero-top-row">
+                        <svg class="soz-hero-emblem" viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="[SOZ] Sozialer Verein seit 1998">
+                            <rect width="360" height="220" fill="#000000"/>
+                            <path d="M 76 30 H 32 V 190 H 76" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="square"/>
+                            <path d="M 284 30 H 328 V 190 H 284" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="square"/>
+                            <text x="180" y="38" text-anchor="middle" fill="#F5CE1B" font-family="Impact, 'Arial Black', sans-serif" font-weight="900" font-size="25" letter-spacing="3">seit 1998</text>
+                            <text x="180" y="150" text-anchor="middle" fill="#FFFFFF" font-family="Impact, 'Arial Black', sans-serif" font-weight="900" font-size="118" letter-spacing="8">SOZ</text>
+                            <text x="180" y="198" text-anchor="middle" fill="#F5CE1B" font-family="Impact, 'Arial Black', sans-serif" font-weight="900" font-size="24" letter-spacing="1.5">Sozialer Verein</text>
+                        </svg>
+
+                        <div>
+                            <div class="status-badge">
+                                <span class="status-dot"></span>
+                                <span id="hero-badge-text">CLAN-LAN • 02.12. – 06.12.2026</span>
+                            </div>
+                            <h1><span>[SOZ]</span> auf der RapidLAN</h1>
+                        </div>
+                    </div>
+
+                    <p class="hero-desc" id="hero-welcome-text">
+                        Willkommen im internen LAN-Portal des Sozialen Vereins! Hier findet ihr unseren TeamSpeak-Zugang, alle Infos zum RapidLAN-Haus in Velen-Ramsdorf, die [SOZ]-Packliste (Stand 07/2026) sowie die wichtigsten Q&amp;As für 5 Tage Ausnahmezustand.
+                    </p>
+
+                    <!-- Live-Countdown bis Mittwoch 02.12.2026 11:00 Uhr -->
+                    <div class="countdown-box" aria-label="Countdown bis zum RapidLAN Start">
+                        <div class="countdown-header">
+                            <span id="countdown-title">Countdown bis Einlass (Mi, 02.12. • 11:00 Uhr)</span>
+                            <span id="countdown-status">● BEREIT</span>
+                        </div>
+                        <div class="countdown-grid" id="countdown-grid">
+                            <div class="cd-unit">
+                                <span class="cd-val" id="cd-days">--</span>
+                                <span class="cd-lbl">Tage</span>
+                            </div>
+                            <div class="cd-unit">
+                                <span class="cd-val" id="cd-hours">--</span>
+                                <span class="cd-lbl">Std</span>
+                            </div>
+                            <div class="cd-unit">
+                                <span class="cd-val" id="cd-mins">--</span>
+                                <span class="cd-lbl">Min</span>
+                            </div>
+                            <div class="cd-unit">
+                                <span class="cd-val" id="cd-secs">--</span>
+                                <span class="cd-lbl">Sek</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hero-meta-grid">
+                        <div class="meta-pill">
+                            <span class="meta-pill-label">Location</span>
+                            <span class="meta-pill-value" id="meta-location">RapidLAN Haus, Velen-Ramsdorf</span>
+                        </div>
+                        <div class="meta-pill">
+                            <span class="meta-pill-label">Anreise &amp; Abreise (Rapid)</span>
+                            <span class="meta-pill-value" id="meta-dates">Mi ab 11:00 Uhr • So bis 12:00 Uhr</span>
+                        </div>
+                        <div class="meta-pill">
+                            <span class="meta-pill-label">Business Glasfaser</span>
+                            <span class="meta-pill-value" id="meta-internet">1 Gbit/s Down • 500 Mbit/s Up</span>
+                        </div>
+                        <div class="meta-pill">
+                            <span class="meta-pill-label">Haus-Größe</span>
+                            <span class="meta-pill-value" id="meta-size">700 m² • 25 Plätze • 8 Ruheräume</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TeamSpeak 3 Box (soz-clan.de / kotzen) -->
+                <div class="ts-card">
+                    <div class="ts-header">
+                        <div class="ts-title-wrap">
+                            <div class="ts-icon" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="ts-title">TeamSpeak 3 Server</div>
+                                <div class="ts-subtitle">[SOZ] Clan-Voice &amp; Turnier-Orga</div>
+                            </div>
+                        </div>
+                        <span class="ts-online-tag">● ONLINE</span>
+                    </div>
+
+                    <div class="copy-row">
+                        <div class="copy-info">
+                            <span class="copy-label">Server-Adresse</span>
+                            <span class="copy-value" id="ts-address">soz-clan.de</span>
+                        </div>
+                        <button type="button" class="btn-copy" data-copy-target="ts-address" data-copy-label="TeamSpeak-Adresse">
+                            Kopieren
+                        </button>
+                    </div>
+
+                    <div class="copy-row">
+                        <div class="copy-info">
+                            <span class="copy-label">Server-Passwort</span>
+                            <span class="copy-value" id="ts-password" data-secret="">••••••</span>
+                        </div>
+                        <div class="btn-group-inline">
+                            <button type="button" class="btn-copy" id="btn-toggle-ts-pass" aria-label="Passwort anzeigen oder verbergen">
+                                Zeigen
+                            </button>
+                            <button type="button" class="btn-copy" data-copy-target="ts-password" data-copy-label="TeamSpeak-Passwort">
+                                Kopieren
+                            </button>
+                        </div>
+                    </div>
+
+                    <a href="#" id="ts-direct-link" class="btn-ts-connect">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        Direkt mit TeamSpeak verbinden
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             1. RAPIDLAN VELEN-RAMSDORF – LOCATION & AUSSTATTUNG
+             ========================================================================== -->
+        <section id="lanhaus">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        RapidLAN Haus (Velen-Ramsdorf)
+                    </h2>
+                    <p class="section-desc">Alle Fakten zur Location, Ausstattung und Hausordnung im Kreis Borken.</p>
+                </div>
+            </div>
+
+            <div class="highlights-banner">
+                <div class="stat-card">
+                    <span class="stat-number">700 m²</span>
+                    <span class="stat-label">Vollklimatisiertes LAN-Haus</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">1 Gbit/s</span>
+                    <span class="stat-label">Down / 500 Mbit/s Up Glasfaser</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">130 m²</span>
+                    <span class="stat-label">Gaming-Raum + Gamechanger-Stühle</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">8 Räume</span>
+                    <span class="stat-label">Ruheräume (ca. 175 m²)</span>
+                </div>
+            </div>
+
+            <div class="info-grid-2">
+                <div class="info-card">
+                    <h3 class="info-card-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                        Gaming, Lounge &amp; Freizeit vor Ort
+                    </h3>
+                    <ul class="feature-list" id="equipment-list"></ul>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="info-card-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        Wichtige Infos &amp; Hausregeln
+                    </h3>
+                    <ul class="feature-list" id="rules-list"></ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             2. INTERAKTIVE [SOZ] AUSSTATTUNGS- & PACKLISTE (STAND 07/2026)
+             ========================================================================== -->
+        <section id="packliste">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 11l3 3L22 4"></path>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                        [SOZ] Ausstattungs- &amp; Packliste
+                    </h2>
+                    <p class="section-desc">Stand 07/2026 – angepasst auf RapidLAN. Haken werden automatisch in deinem Browser gespeichert.</p>
+                </div>
+                <input type="search" id="pack-search" class="faq-search" placeholder="Packliste durchsuchen..." aria-label="Packliste durchsuchen">
+            </div>
+
+            <!-- RapidLAN vs. MTA Clan-Hinweisbox -->
+            <div class="rapid-diff-banner">
+                <div class="rapid-diff-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    RapidLAN-Besonderheiten für [SOZ] (im Vergleich zu MTA)
+                </div>
+                <div class="rapid-diff-grid">
+                    <div class="rapid-diff-item">
+                        <span class="tag-rapid">Mitbringen</span>
+                        <span><strong>Bettwäsche</strong> (Bettdecke &amp; Kopfkissen) &amp; <strong>Handtücher</strong> selbst mitbringen</span>
+                    </div>
+                    <div class="rapid-diff-item">
+                        <span class="tag-vorort">Vor Ort</span>
+                        <span><strong>Airfryer vorhanden</strong> (plus voll ausgestattete 68 m² Küche &amp; Kühlschränke)</span>
+                    </div>
+                    <div class="rapid-diff-item">
+                        <span class="tag-vorort">Vor Ort</span>
+                        <span><strong>LAN-Kabel &amp; Mehrfachsteckdosen</strong> sind pro Platz im RapidLAN-Haus vorhanden</span>
+                    </div>
+                    <div class="rapid-diff-item">
+                        <span class="tag-rapid">Zeiten</span>
+                        <span><strong>Anreise</strong> Mi ab 11:00 Uhr • <strong>Abreise</strong> So bis spätestens 12:00 Uhr</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fortschrittsbalken & Filter -->
+            <div class="pack-controls">
+                <div class="pack-progress-row">
+                    <div class="pack-progress-text">
+                        Dein Pack-Fortschritt: <span id="pack-progress-count">0 / 0</span> (<span id="pack-progress-pct">0%</span>)
+                    </div>
+                    <div class="pack-toolbar">
+                        <div class="pack-filters" id="pack-filters">
+                            <button type="button" class="pack-filter-btn active" data-filter="all">Alle Punkte</button>
+                            <button type="button" class="pack-filter-btn" data-filter="unchecked">Nur Offen</button>
+                            <button type="button" class="pack-filter-btn" data-filter="rapid">Rapid-Spezial</button>
+                        </div>
+                        <button type="button" class="pack-reset-btn" id="btn-reset-pack">Haken zurücksetzen</button>
+                    </div>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="pack-progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Kategorien-Grid -->
+            <div class="pack-grid" id="pack-grid"></div>
+        </section>
+
+        <!-- ==========================================================================
+             3. Q&A / HÄUFIGE FRAGEN ZUR RAPIDLAN
+             ========================================================================== -->
+        <section id="faq">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        Q&amp;A / Häufige Fragen
+                    </h2>
+                    <p class="section-desc">Offizielle RapidLAN-Infos &amp; Clan-Checkliste kompakt beantwortet.</p>
+                </div>
+                <input type="search" id="faq-search" class="faq-search" placeholder="Frage suchen (z. B. Bettwäsche, Parken)..." aria-label="Fragen durchsuchen">
+            </div>
+
+            <div class="faq-list" id="faq-list"></div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================================================
+         FOOTER MIT WLAN-FUSSZEILE & CLAN-INFOS
+         ========================================================================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <!-- WLAN-Zugang als kompakte Fußzeile -->
+            <div class="wifi-strip-footer" aria-label="WLAN Zugangsdaten Fußzeile">
+                <div class="wifi-strip-inner">
+                    <span class="wifi-label">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                            <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                            <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                            <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                        </svg>
+                        RapidLAN WLAN-Zugang:
+                    </span>
+                    <div class="wifi-items">
+                        <div class="wifi-chip">
+                            <span class="wifi-chip-key">SSID:</span>
+                            <span class="wifi-chip-val" id="wifi-foot-ssid">RapidLAN_5GHz</span>
+                            <button type="button" class="wifi-mini-btn" data-copy-target="wifi-foot-ssid" data-copy-label="WLAN-Name">Kopieren</button>
+                        </div>
+                        <div class="wifi-chip">
+                            <span class="wifi-chip-key">Passwort:</span>
+                            <span class="wifi-chip-val" id="wifi-foot-pass" data-secret="">••••••••••••</span>
+                            <button type="button" class="wifi-mini-btn" data-wifi-toggle="foot">Zeigen</button>
+                            <button type="button" class="wifi-mini-btn" data-copy-target="wifi-foot-pass" data-copy-label="WLAN-Passwort">Kopieren</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <svg width="78" height="48" viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" style="border-radius:6px; border:1px solid #242736;">
+                        <rect width="360" height="220" fill="#000000"/>
+                        <path d="M 76 30 H 32 V 190 H 76" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="square"/>
+                        <path d="M 284 30 H 328 V 190 H 284" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="square"/>
+                        <text x="180" y="38" text-anchor="middle" fill="#F5CE1B" font-family="Impact, 'Arial Black', sans-serif" font-weight="900" font-size="25" letter-spacing="3">seit 1998</text>
+                        <text x="180" y="150" text-anchor="middle" fill="#FFFFFF" font-family="Impact, 'Arial Black', sans-serif" font-weight="900" font-size="118" letter-spacing="8">SOZ</text>
+                        <text x="180" y="198" text-anchor="middle" fill="#F5CE1B" font-family="Impact, 'Arial Black', sans-serif" font-weight="900" font-size="24" letter-spacing="1.5">Sozialer Verein</text>
+                    </svg>
+                    <div>
+                        <strong style="color: var(--text-primary);">[SOZ] Sozialer Verein – Seit 1998</strong><br>
+                        <span>Clan-Intranet • RapidLAN Velen-Ramsdorf (02.12. – 06.12.2026)</span>
+                    </div>
+                </div>
+
+                <div class="orga-chips" id="orga-list"></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Benachrichtigung -->
+    <div class="toast" id="toast" role="status" aria-live="polite">
+        <span style="color: var(--soz-yellow);">✓</span>
+        <span id="toast-message">In die Zwischenablage kopiert</span>
+    </div>
+
+    <!-- ==========================================================================
+         ZENTRALE KONFIGURATION & JAVASCRIPT LOGIK (VERSION 0.1 OHNE ZEITPLAN)
+         ========================================================================== -->
+    <script>
+        const CONFIG = {
+            event: {
+                badge: "CLAN-LAN • 02.12. – 06.12.2026",
+                welcomeText: "Willkommen im internen LAN-Portal des Sozialen Vereins! Hier findet ihr unseren TeamSpeak-Zugang, alle Infos zum RapidLAN-Haus in Velen-Ramsdorf, die [SOZ]-Packliste (Stand 07/2026) sowie die wichtigsten Q&As für 5 Tage Ausnahmezustand.",
+                location: "RapidLAN Haus, Velen-Ramsdorf",
+                dates: "Mi ab 11:00 Uhr • So bis 12:00 Uhr",
+                internet: "1 Gbit/s Down • 500 Mbit/s Up",
+                size: "700 m² • 25 Plätze • 8 Ruheräume",
+                startIso: "2026-12-02T11:00:00+01:00",
+                endIso: "2026-12-06T12:00:00+01:00"
+            },
+
+            wifi: {
+                ssid: "RapidLAN_5GHz",
+                password: "Vor Ort / am Router"
+            },
+
+            teamspeak: {
+                address: "soz-clan.de",
+                password: "kotzen"
+            },
+
+            locationDetails: {
+                equipment: [
+                    "<strong>130 m² Gaming-Raum:</strong> Große Einzelplätze mit direktem LAN-Anschluss &amp; Strom, hochwertigen Gamechanger-Gaming-Stühlen, Viewsonic X100-4K UHD LED Beamer, Flipchart-Whiteboard und Kühlschränken direkt im Gaming-Bereich.",
+                    "<strong>Küche &amp; BBQ:</strong> 68 m² voll ausgestattete Küche (inkl. Airfryer) mit separatem Essraum sowie ein 110 m² großer Garten mit Outdoor-Edelstahl-Holzkohlegrill.",
+                    "<strong>Action &amp; Lounge:</strong> Eigener 45 m² Tischtennis-Raum, 35 m² Airhockey-Raum sowie eine 50 m² Lounge mit Kickertisch und PlayStation 5 Slim Disc Edition.",
+                    "<strong>Schlafen &amp; Klima:</strong> 8 Ruheräume (ca. 175 m²), komplettes Haus vollklimatisiert und mit Fußbodenheizung ausgestattet."
+                ],
+                rules: [
+                    "<strong>An- &amp; Abreise (Rapid):</strong> Anreise am Mittwoch, 02.12. ab <strong>11:00 Uhr</strong> morgens. Abreise am Sonntag, 06.12. bis spätestens <strong>12:00 Uhr</strong>.",
+                    "<strong>Einkaufen &amp; Essen:</strong> Supermärkte, Pizzerien und Imbisse sind innerhalb von <strong>500 Metern</strong> fußläufig erreichbar.",
+                    "<strong>Parken:</strong> 15 Parkplätze direkt am RapidLAN Haus sowie weitere Stellplätze direkt angrenzend.",
+                    "<strong>Hausordnung:</strong> Zutritt erst ab 18 Jahren. Rauchen ist nur hinter dem Gebäude im Garten oder im anliegenden Raucherraum gestattet. Keine Haustiere."
+                ]
+            },
+
+            packingList: [
+                {
+                    category: "Hardware & Peripherie",
+                    items: [
+                        { id: "hw-pc", label: "PC", rapid: false },
+                        { id: "hw-mon", label: "Monitor", rapid: false },
+                        { id: "hw-peri", label: "Tastatur / Maus / Mauspad", rapid: false },
+                        { id: "hw-hs", label: "Headset", rapid: false },
+                        { id: "hw-pad", label: "Gamepad / Webcam", rapid: false },
+                        { id: "hw-beamer", label: "Beamer / Musikbox / Beamerhalter", note: "4K UHD Beamer ist im RapidLAN-Haus ebenfalls vorhanden", rapid: false }
+                    ]
+                },
+                {
+                    category: "Kabel & Zubehör",
+                    items: [
+                        { id: "kb-pc", label: "Stromkabel PC", rapid: false },
+                        { id: "kb-mon", label: "Stromkabel Monitor", rapid: false },
+                        { id: "kb-gpu", label: "Monitorkabel (Graka)", rapid: false },
+                        { id: "kb-lan", label: "Netzwerkkabel (2–20 Meter)", note: "Vor Ort am Platz vorhanden – eigenes Backup-Kabel optional", rapid: true },
+                        { id: "kb-power", label: "Mehrfachsteckdose", note: "Vor Ort am Platz vorhanden – zusätzliche Leiste schadet nie", rapid: true },
+                        { id: "kb-tape", label: "Kabelbinder / Panzerband", rapid: false }
+                    ]
+                },
+                {
+                    category: "[SOZ] Clan-Gear & Klamotten",
+                    items: [
+                        { id: "cl-mug", label: "[soz]-Tasse / Bierglas / Maß", rapid: false },
+                        { id: "cl-wear", label: "[soz]-Klamotten / Bademantel / Fahne", rapid: false },
+                        { id: "cl-shoes", label: "Hausschuhe / Schlappen", rapid: false },
+                        { id: "cl-clothes", label: "Kleidung zum Wechseln", rapid: false },
+                        { id: "cl-led", label: "Lichterkette", rapid: false },
+                        { id: "cl-swim", label: "Badehose", rapid: false }
+                    ]
+                },
+                {
+                    category: "Hygiene & Gesundheit",
+                    items: [
+                        { id: "hy-tooth", label: "Zahnbürste / Zahnpasta", rapid: false },
+                        { id: "hy-shower", label: "Duschsachen", rapid: false },
+                        { id: "sl-towel", label: "Handtücher / Waschlappen", note: "Rapid-Spezial – bitte selbst mitbringen!", rapid: true },
+                        { id: "hy-tissue", label: "Taschentücher", rapid: false },
+                        { id: "hy-comb", label: "Bürste / Kamm", rapid: false },
+                        { id: "hy-meds", label: "Medikamente (verschriebene und vorsorgliche)", rapid: false }
+                    ]
+                },
+                {
+                    category: "Wichtige Dokumente & Technik",
+                    items: [
+                        { id: "doc-id", label: "Personalausweis", note: "Zutritt im RapidLAN-Haus ab 18 Jahren", rapid: false },
+                        { id: "doc-dl", label: "Führerschein", rapid: false },
+                        { id: "doc-hc", label: "Gesundheitskarte", rapid: false },
+                        { id: "doc-organ", label: "Organspendeausweis", rapid: false },
+                        { id: "doc-blood", label: "Blutspendeausweis", rapid: false },
+                        { id: "doc-perm", label: "Erlaubnis der Eltern / Frau", rapid: false },
+                        { id: "doc-phone", label: "Handy & Ladegerät", rapid: false }
+                    ]
+                },
+                {
+                    category: "Schlafen, Möbel & Rapid-Spezial",
+                    items: [
+                        { id: "sl-bed", label: "Bettwäsche (Bettdecke & Kopfkissen)", note: "Rapid-Spezial – Pflicht für die 8 Ruheräume!", rapid: true },
+                        { id: "hw-table", label: "Extra Tisch / extra Stühle", note: "Im RapidLAN-Haus sind 25 Plätze & Gamechanger-Stühle vorhanden", rapid: false }
+                    ]
+                },
+                {
+                    category: "Küche, Sonstiges & Verpflegung",
+                    items: [
+                        { id: "kt-tp", label: "T-Papier", rapid: false },
+                        { id: "kt-bags", label: "Müllbeutel", rapid: false },
+                        { id: "kt-tabs", label: "Spültabs", rapid: false },
+                        { id: "kt-can", label: "Dosenöffner", rapid: false },
+                        { id: "kt-paper", label: "Küchenpapier", rapid: false },
+                        { id: "kt-soap", label: "Handseife", rapid: false },
+                        { id: "kt-food", label: "Eigenes Essen und Trinken", note: "Airfryer vor Ort vorhanden (ebenso Küche & Kühlschränke)", rapid: true }
+                    ]
+                }
+            ],
+
+            faqs: [
+                {
+                    q: "Wann genau können wir am Mittwoch anreisen und wann müssen wir raus?",
+                    a: "Laut RapidLAN-Regelung dürfen wir am <strong>Mittwoch, 02.12.2026 ab 11:00 Uhr</strong> ins Haus. Am <strong>Sonntag, 06.12.2026</strong> muss das LAN-Haus bis spätestens <strong>12:00 Uhr</strong> wieder besenrein verlassen werden."
+                },
+                {
+                    q: "Was unterscheidet die RapidLAN-Packliste von unserer MTA-Liste?",
+                    a: "Für RapidLAN gilt: <strong>Bettwäsche (Bettdecke & Kopfkissen) und Handtücher</strong> müsst ihr selbst mitbringen. Dafür ist ein <strong>Airfryer</strong> vor Ort vorhanden (zusätzlich zur 68 m² Küche), und <strong>LAN-Kabel sowie Mehrfachsteckdosen</strong> liegen bereits an jedem Platz."
+                },
+                {
+                    q: "Wie komme ich auf unseren [SOZ] TeamSpeak 3 Server?",
+                    a: "Trage in TeamSpeak 3 die Server-Adresse <strong>soz-clan.de</strong> und das Passwort <strong>kotzen</strong> ein – oder klicke ganz oben auf den gelben Button <em>„Direkt mit TeamSpeak verbinden“</em>."
+                },
+                {
+                    q: "Muss ich eigene LAN-Kabel oder Mehrfachsteckdosen mitbringen?",
+                    a: "Nein, laut RapidLAN sind <strong>LAN-Kabel und Mehrfachsteckdosen für jede Person direkt am Platz vorhanden</strong>. Ein eigenes Ersatzkabel schadet natürlich trotzdem nie."
+                },
+                {
+                    q: "Was passiert, wenn meine Maus oder Tastatur auf der LAN kaputtgeht?",
+                    a: "Kein Stress: Das RapidLAN Haus hat für Notfälle ein paar Ersatztastaturen und Ersatzmäuse vor Ort."
+                },
+                {
+                    q: "Wo können wir vor Ort einkaufen oder Essen bestellen?",
+                    a: "In Velen-Ramsdorf erreicht ihr innerhalb von <strong>500 Metern</strong> vom LAN-Haus verschiedene Supermärkte, Pizzerien und Imbisse."
+                },
+                {
+                    q: "Wo darf geraucht werden und wo können wir parken?",
+                    a: "Direkt am Haus gibt es <strong>15 Parkplätze</strong> sowie weitere Stellplätze direkt daneben. Rauchen ist im Haus verboten und nur hinter dem Gebäude im eigenen Garten oder im anliegenden Raucherraum erlaubt."
+                }
+            ],
+
+            orgas: [
+                { name: "[SOZ] Clan-Orga", role: "TeamSpeak: soz-clan.de" },
+                { name: "Location", role: "RapidLAN Velen-Ramsdorf" }
+            ]
+        };
+
+        /* ==========================================================================
+           INITIALISIERUNG & RENDERING
+           ========================================================================== */
+        const PACK_STORAGE_KEY = "soz_rapidlan_packliste_2026_v1";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            renderHeroAndTeamSpeak();
+            renderWifiBars();
+            startLiveCountdown();
+            renderLocationDetails();
+            renderPackingList();
+            renderFAQs();
+            renderOrgaFooter();
+            setupTeamSpeakPasswordToggle();
+            setupCopyButtons();
+        });
+
+        function renderHeroAndTeamSpeak() {
+            document.getElementById("hero-badge-text").textContent = CONFIG.event.badge;
+            document.getElementById("hero-welcome-text").textContent = CONFIG.event.welcomeText;
+            document.getElementById("meta-location").textContent = CONFIG.event.location;
+            document.getElementById("meta-dates").textContent = CONFIG.event.dates;
+            document.getElementById("meta-internet").textContent = CONFIG.event.internet;
+            document.getElementById("meta-size").textContent = CONFIG.event.size;
+
+            const tsAddrEl = document.getElementById("ts-address");
+            const tsPassEl = document.getElementById("ts-password");
+            const tsLinkEl = document.getElementById("ts-direct-link");
+
+            tsAddrEl.textContent = CONFIG.teamspeak.address;
+            tsPassEl.dataset.secret = CONFIG.teamspeak.password;
+            tsPassEl.dataset.revealed = "false";
+            tsPassEl.textContent = "•".repeat(CONFIG.teamspeak.password.length);
+
+            tsLinkEl.href = `ts3server://${encodeURIComponent(CONFIG.teamspeak.address)}?password=${encodeURIComponent(CONFIG.teamspeak.password)}`;
+        }
+
+        function renderWifiBars() {
+            const spots = ["head", "foot"];
+            spots.forEach(spot => {
+                const ssidEl = document.getElementById(`wifi-${spot}-ssid`);
+                const passEl = document.getElementById(`wifi-${spot}-pass`);
+                if (ssidEl) ssidEl.textContent = CONFIG.wifi.ssid;
+                if (passEl) {
+                    passEl.dataset.secret = CONFIG.wifi.password;
+                    passEl.dataset.revealed = "false";
+                    passEl.textContent = "•".repeat(Math.min(CONFIG.wifi.password.length, 12));
+                }
+            });
+
+            document.querySelectorAll("[data-wifi-toggle]").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const spot = btn.getAttribute("data-wifi-toggle");
+                    const passEl = document.getElementById(`wifi-${spot}-pass`);
+                    if (!passEl) return;
+                    const isRevealed = passEl.dataset.revealed === "true";
+                    if (isRevealed) {
+                        passEl.textContent = "•".repeat(Math.min(passEl.dataset.secret.length, 12));
+                        passEl.dataset.revealed = "false";
+                        btn.textContent = "Zeigen";
+                    } else {
+                        passEl.textContent = passEl.dataset.secret;
+                        passEl.dataset.revealed = "true";
+                        btn.textContent = "Verbergen";
+                    }
+                });
+            });
+        }
+
+        function startLiveCountdown() {
+            const startMs = new Date(CONFIG.event.startIso).getTime();
+            const endMs = new Date(CONFIG.event.endIso).getTime();
+
+            const titleEl = document.getElementById("countdown-title");
+            const statusEl = document.getElementById("countdown-status");
+            const daysEl = document.getElementById("cd-days");
+            const hoursEl = document.getElementById("cd-hours");
+            const minsEl = document.getElementById("cd-mins");
+            const secsEl = document.getElementById("cd-secs");
+
+            function update() {
+                const now = Date.now();
+
+                if (now >= startMs && now <= endMs) {
+                    titleEl.textContent = "RapidLAN Velen-Ramsdorf • Abreise So 12:00 Uhr";
+                    statusEl.textContent = "● LAN LÄUFT GERADE!";
+                    statusEl.style.color = "#10B981";
+                    const diff = Math.max(0, endMs - now);
+                    setUnits(diff);
+                    return;
+                }
+
+                if (now > endMs) {
+                    titleEl.textContent = "RapidLAN 02.12. – 06.12.2026";
+                    statusEl.textContent = "✓ GG WP – BIS ZUR NÄCHSTEN LAN!";
+                    daysEl.textContent = "00";
+                    hoursEl.textContent = "00";
+                    minsEl.textContent = "00";
+                    secsEl.textContent = "00";
+                    return;
+                }
+
+                const diff = startMs - now;
+                setUnits(diff);
+            }
+
+            function setUnits(ms) {
+                const totalSeconds = Math.floor(ms / 1000);
+                const days = Math.floor(totalSeconds / 86400);
+                const hours = Math.floor((totalSeconds % 86400) / 3600);
+                const mins = Math.floor((totalSeconds % 3600) / 60);
+                const secs = totalSeconds % 60;
+
+                daysEl.textContent = String(days).padStart(2, "0");
+                hoursEl.textContent = String(hours).padStart(2, "0");
+                minsEl.textContent = String(mins).padStart(2, "0");
+                secsEl.textContent = String(secs).padStart(2, "0");
+            }
+
+            update();
+            setInterval(update, 1000);
+        }
+
+        function renderLocationDetails() {
+            document.getElementById("equipment-list").innerHTML = CONFIG.locationDetails.equipment.map(html => `
+                <li><span class="bullet-dot green"></span><span>${html}</span></li>
+            `).join("");
+
+            document.getElementById("rules-list").innerHTML = CONFIG.locationDetails.rules.map(html => `
+                <li><span class="bullet-dot"></span><span>${html}</span></li>
+            `).join("");
+        }
+
+        function getCheckedPackItems() {
+            try {
+                const raw = localStorage.getItem(PACK_STORAGE_KEY);
+                return raw ? JSON.parse(raw) : {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function saveCheckedPackItems(state) {
+            try {
+                localStorage.setItem(PACK_STORAGE_KEY, JSON.stringify(state));
+            } catch (e) {
+                // Ignorieren, falls localStorage gesperrt ist
+            }
+        }
+
+        function renderPackingList() {
+            const grid = document.getElementById("pack-grid");
+            const searchInput = document.getElementById("pack-search");
+            const filterBtns = document.querySelectorAll(".pack-filter-btn");
+            const resetBtn = document.getElementById("btn-reset-pack");
+
+            let currentFilter = "all";
+            let currentSearch = "";
+            let checkedMap = getCheckedPackItems();
+            let resetArmed = false;
+
+            function updateProgress() {
+                let total = 0;
+                let done = 0;
+                CONFIG.packingList.forEach(cat => {
+                    cat.items.forEach(item => {
+                        total++;
+                        if (checkedMap[item.id]) done++;
+                    });
+                });
+                const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+                document.getElementById("pack-progress-count").textContent = `${done} / ${total}`;
+                document.getElementById("pack-progress-pct").textContent = `${pct}%`;
+                document.getElementById("pack-progress-fill").style.width = `${pct}%`;
+            }
+
+            function draw() {
+                const term = currentSearch.trim().toLowerCase();
+
+                const html = CONFIG.packingList.map(cat => {
+                    const catTotal = cat.items.length;
+                    const catDone = cat.items.filter(it => checkedMap[it.id]).length;
+
+                    const visibleItems = cat.items.filter(item => {
+                        const isChecked = !!checkedMap[item.id];
+                        if (currentFilter === "unchecked" && isChecked) return false;
+                        if (currentFilter === "rapid" && !item.rapid) return false;
+                        if (term) {
+                            const hay = `${cat.category} ${item.label} ${item.note || ""}`.toLowerCase();
+                            if (!hay.includes(term)) return false;
+                        }
+                        return true;
+                    });
+
+                    if (visibleItems.length === 0) return "";
+
+                    return `
+                        <div class="pack-category-card">
+                            <div class="pack-cat-header">
+                                <h3 class="pack-cat-title">${escapeHtml(cat.category)}</h3>
+                                <span class="pack-cat-count">${catDone} / ${catTotal}</span>
+                            </div>
+                            <div class="pack-items-list">
+                                ${visibleItems.map(item => {
+                                    const isChecked = !!checkedMap[item.id];
+                                    const isVorOrt = item.note && item.note.toLowerCase().includes("vor ort");
+                                    return `
+                                        <div class="pack-item ${isChecked ? "checked" : ""}" data-pack-id="${escapeHtml(item.id)}" role="checkbox" aria-checked="${isChecked}" tabindex="0">
+                                            <div class="pack-checkbox" aria-hidden="true">
+                                                ${isChecked ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2"><polyline points="20 6 9 17 4 12"></polyline></svg>` : ""}
+                                            </div>
+                                            <div class="pack-item-body">
+                                                <div class="pack-item-top">
+                                                    <span class="pack-item-label">${escapeHtml(item.label)}</span>
+                                                    ${item.rapid ? `<span class="${isVorOrt ? "tag-vorort" : "tag-rapid"}">${isVorOrt ? "Vor Ort" : "Rapid"}</span>` : ""}
+                                                </div>
+                                                ${item.note ? `<span class="pack-item-note">${escapeHtml(item.note)}</span>` : ""}
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join("")}
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+
+                grid.innerHTML = html || `<p style="color: var(--text-muted); grid-column: 1 / -1;">Keine Einträge für diesen Filter gefunden.</p>`;
+                updateProgress();
+            }
+
+            grid.addEventListener("click", (e) => {
+                const itemEl = e.target.closest(".pack-item");
+                if (!itemEl) return;
+                const id = itemEl.getAttribute("data-pack-id");
+                checkedMap[id] = !checkedMap[id];
+                saveCheckedPackItems(checkedMap);
+                draw();
+            });
+
+            grid.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    const itemEl = e.target.closest(".pack-item");
+                    if (!itemEl) return;
+                    e.preventDefault();
+                    const id = itemEl.getAttribute("data-pack-id");
+                    checkedMap[id] = !checkedMap[id];
+                    saveCheckedPackItems(checkedMap);
+                    draw();
+                }
+            });
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    filterBtns.forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    currentFilter = btn.getAttribute("data-filter");
+                    draw();
+                });
+            });
+
+            searchInput.addEventListener("input", () => {
+                currentSearch = searchInput.value;
+                draw();
+            });
+
+            resetBtn.addEventListener("click", () => {
+                if (!resetArmed) {
+                    resetArmed = true;
+                    resetBtn.textContent = "Wirklich alle Haken löschen?";
+                    setTimeout(() => {
+                        resetArmed = false;
+                        resetBtn.textContent = "Haken zurücksetzen";
+                    }, 3500);
+                    return;
+                }
+                checkedMap = {};
+                saveCheckedPackItems(checkedMap);
+                resetArmed = false;
+                resetBtn.textContent = "Haken zurücksetzen";
+                draw();
+                showToast("Packliste wurde zurückgesetzt");
+            });
+
+            draw();
+        }
+
+        function renderFAQs() {
+            const container = document.getElementById("faq-list");
+            const searchInput = document.getElementById("faq-search");
+
+            function draw(filterText = "") {
+                const term = filterText.trim().toLowerCase();
+                const filtered = CONFIG.faqs.filter(item =>
+                    item.q.toLowerCase().includes(term) || item.a.toLowerCase().includes(term)
+                );
+
+                if (filtered.length === 0) {
+                    container.innerHTML = `<p style="color: var(--text-muted);">Keine passende Frage gefunden.</p>`;
+                    return;
+                }
+
+                container.innerHTML = filtered.map((item, idx) => `
+                    <details class="faq-item" ${idx === 0 && !term ? "open" : ""}>
+                        <summary>
+                            <span>${escapeHtml(item.q)}</span>
+                            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </summary>
+                        <div class="faq-answer">${item.a}</div>
+                    </details>
+                `).join("");
+            }
+
+            draw();
+            searchInput.addEventListener("input", (e) => draw(e.target.value));
+        }
+
+        function renderOrgaFooter() {
+            document.getElementById("orga-list").innerHTML = CONFIG.orgas.map(o => `
+                <div class="orga-chip"><span>${escapeHtml(o.name)}</span> • ${escapeHtml(o.role)}</div>
+            `).join("");
+        }
+
+        function setupTeamSpeakPasswordToggle() {
+            const btn = document.getElementById("btn-toggle-ts-pass");
+            const passEl = document.getElementById("ts-password");
+
+            btn.addEventListener("click", () => {
+                const isRevealed = passEl.dataset.revealed === "true";
+                if (isRevealed) {
+                    passEl.textContent = "•".repeat(passEl.dataset.secret.length);
+                    passEl.dataset.revealed = "false";
+                    btn.textContent = "Zeigen";
+                } else {
+                    passEl.textContent = passEl.dataset.secret;
+                    passEl.dataset.revealed = "true";
+                    btn.textContent = "Verbergen";
+                }
+            });
+        }
+
+        function setupCopyButtons() {
+            document.addEventListener("click", (e) => {
+                const btn = e.target.closest("[data-copy-target]");
+                if (!btn) return;
+
+                const targetId = btn.getAttribute("data-copy-target");
+                const label = btn.getAttribute("data-copy-label") || "Wert";
+                const targetEl = document.getElementById(targetId);
+                if (!targetEl) return;
+
+                const textToCopy = targetEl.dataset.secret !== undefined
+                    ? targetEl.dataset.secret
+                    : targetEl.textContent.trim();
+
+                copyTextSafe(textToCopy, () => {
+                    const originalText = btn.textContent;
+                    btn.classList.add("copied");
+                    btn.textContent = "✓ Kopiert";
+                    showToast(`${label} kopiert: ${textToCopy}`);
+
+                    setTimeout(() => {
+                        btn.classList.remove("copied");
+                        btn.textContent = originalText;
+                    }, 1800);
+                });
+            });
+        }
+
+        function copyTextSafe(text, onSuccess) {
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.setAttribute("readonly", "");
+            textarea.style.position = "fixed";
+            textarea.style.top = "-9999px";
+            textarea.style.left = "-9999px";
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            try {
+                const ok = document.execCommand("copy");
+                document.body.removeChild(textarea);
+                if (ok && onSuccess) {
+                    onSuccess();
+                    return;
+                }
+            } catch (err) {
+                document.body.removeChild(textarea);
+            }
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    if (onSuccess) onSuccess();
+                }).catch(() => {});
+            }
+        }
+
+        let toastTimer = null;
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            const msgEl = document.getElementById("toast-message");
+            msgEl.textContent = message;
+            toast.classList.add("show");
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove("show");
+            }, 2500);
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
